@@ -13,6 +13,10 @@ DOMAIN-SUFFIX,ipv6.msftconnecttest.com
 DOMAIN-KEYWORD,mirror
 DOMAIN-KEYWORD,ghp
 
+# plex
+DOMAIN-SUFFIX,v4.plex.tv
+DOMAIN-SUFFIX,amazonaws.com
+DOMAIN-SUFFIX,plex.direct
 
 # 360
 DOMAIN-SUFFIX,360.com
