@@ -335,11 +335,6 @@ config config_subscribe
 	list ex_keyword '剩余'
 	list ex_keyword '到期'
 	list ex_keyword '异常'
-	list ex_keyword '0.1'
-	list ex_keyword '0.2'
-	list ex_keyword '0.3'
-	list ex_keyword '0.4'
-	list ex_keyword '0.5'
 
 config config_subscribe
 	option enabled '1'
@@ -361,9 +356,4 @@ config config_subscribe
 	list ex_keyword '官网'
 	list ex_keyword '失败'
 	list ex_keyword '到期'
-	list ex_keyword '0.1'
-	list ex_keyword '0.2'
-	list ex_keyword '0.3'
-	list ex_keyword '0.4'
-	list ex_keyword '0.5'
 
