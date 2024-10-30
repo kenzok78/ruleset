@@ -3,6 +3,8 @@
 
 # 域名后缀匹配
 DOMAIN-SUFFIX,qichiyu.com
+DOMAIN-SUFFIX,plexapp.com
+DOMAIN-SUFFIX,plexmediaserver.com
 DOMAIN-SUFFIX,downloads.plex.tv
 DOMAIN-SUFFIX,metadata-static.plex.tv
 DOMAIN-SUFFIX,metadata.provider.plex.tv
