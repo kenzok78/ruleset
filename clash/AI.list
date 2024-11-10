@@ -1,4 +1,5 @@
-# 内容：OpenAi Bard anthropic
+# 内容 OpenAi Bard anthropic claude
+
 # 域名关键字匹配
 # DOMAIN-KEYWORD,openai
 # DOMAIN-KEYWORD,anthropic
@@ -34,3 +35,5 @@ DOMAIN-SUFFIX,vulpes.one
 DOMAIN-SUFFIX,mozz.us
 DOMAIN-SUFFIX,conman.org
 DOMAIN-SUFFIX,bortzmeyer.org
+DOMAIN-SUFFIX,anthropic.com
+DOMAIN-SUFFIX,claude.ai
