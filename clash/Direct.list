@@ -346,6 +346,11 @@ DOMAIN-SUFFIX,v4.plex.tv
 DOMAIN-SUFFIX,amazonaws.com
 DOMAIN-SUFFIX,plex.direct
 
+# samsung
+DOMAIN-SUFFIX,play.samsungcloud.com
+DOMAIN-SUFFIX,api.samsungcloud.com
+DOMAIN-SUFFIX,galaxyappstore.com
+
 # AccelerateDirectSites
 DOMAIN-SUFFIX,10010.com
 DOMAIN-SUFFIX,115.com
@@ -588,3 +593,5 @@ DOMAIN-SUFFIX,zhimg.com
 DOMAIN-SUFFIX,zhipin.com
 DOMAIN-SUFFIX,zhongsou.com
 DOMAIN-SUFFIX,zhuihd.com
+
+
