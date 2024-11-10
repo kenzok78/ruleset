@@ -350,7 +350,7 @@ DOMAIN-SUFFIX,plex.direct
 DOMAIN-SUFFIX,play.samsungcloud.com
 DOMAIN-SUFFIX,api.samsungcloud.com
 DOMAIN-SUFFIX,cn-ms.galaxyappstore.com
-#DOMAIN-SUFFIX,connectivitycheck.gstatic.com
+DOMAIN-SUFFIX,connectivitycheck.gstatic.com
 
 # AccelerateDirectSites
 DOMAIN-SUFFIX,10010.com
