@@ -1,3 +1,4 @@
+
 # 直连补充列表(国内域名不解析时，防止走代理使用)
 
 # MyList
@@ -5,18 +6,25 @@
 DOMAIN-SUFFIX,time.windows.com
 DOMAIN-SUFFIX,lanzov.com
 DOMAIN-SUFFIX,hao123.com
-DOMAIN-SUFFIX,msftcomecttest.com
-DOMAIN-SUFFIX,dns.msftncsi.com
-DOMAIN-SUFFIX,ipv6.msftconnecttest.com
 
 # 域名关键字匹配
-DOMAIN-KEYWORD,mirror
-DOMAIN-KEYWORD,ghp
+DOMAIN-KEYWORD,baidu
 
-# plex
-DOMAIN-SUFFIX,v4.plex.tv
-DOMAIN-SUFFIX,amazonaws.com
-DOMAIN-SUFFIX,plex.direct
+# IP段匹配
+IP-CIDR,219.146.1.66/32,no-resolve
+
+# 国内DNS
+DOMAIN-SUFFIX,dns.alidns.com
+DOMAIN-SUFFIX,doh.pub
+IP-CIDR,219.146.1.66/32,no-resolve
+IP-CIDR,219.147.1.66/32,no-resolve
+IP-CIDR,119.29.29.29/32,no-resolve
+IP-CIDR,223.5.5.5/32,no-resolve
+IP-CIDR,223.6.6.6/32,no-resolve
+IP-CIDR,180.76.76.76/32,no-resolve
+IP-CIDR,114.114.114.114/32,no-resolve
+IP-CIDR,114.114.115.115/32,no-resolve
+
 
 # 360
 DOMAIN-SUFFIX,360.com
@@ -301,9 +309,6 @@ DOMAIN-SUFFIX,tenpay.com
 DOMAIN-SUFFIX,wechat.com
 DOMAIN-SUFFIX,weixin.com
 DOMAIN-SUFFIX,weiyun.com
-DOMAIN-SUFFIX,servicewechat.com
-DOMAIN-SUFFIX,qlogo.cn
-DOMAIN-SUFFIX,qpic.cn
 
 # Vip 唯品会
 DOMAIN-SUFFIX,appsimg.com
@@ -337,7 +342,15 @@ DOMAIN-SUFFIX,jiasule.com
 DOMAIN-SUFFIX,staticfile.org
 DOMAIN-SUFFIX,upaiyun.com
 
+# plex
+DOMAIN-SUFFIX,v4.plex.tv
+DOMAIN-SUFFIX,amazonaws.com
+DOMAIN-SUFFIX,plex.direct
 
+# samsung
+DOMAIN-SUFFIX,play.samsungcloud.com
+DOMAIN-SUFFIX,api.samsungcloud.com
+DOMAIN-SUFFIX,galaxyappstore.com
 
 # AccelerateDirectSites
 DOMAIN-SUFFIX,10010.com
