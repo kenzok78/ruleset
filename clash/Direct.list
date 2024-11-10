@@ -347,8 +347,8 @@ DOMAIN-SUFFIX,amazonaws.com
 DOMAIN-SUFFIX,plex.direct
 
 # samsung
-DOMAIN-SUFFIX,play.samsungcloud.com
-DOMAIN-SUFFIX,api.samsungcloud.com
+DOMAIN-SUFFIX,samsungcloud.com
+DOMAIN-SUFFIX,samsungcloud.com
 DOMAIN-SUFFIX,galaxyappstore.com
 
 # AccelerateDirectSites
