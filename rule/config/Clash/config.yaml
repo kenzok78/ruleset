@@ -136,7 +136,7 @@ proxy-groups:
   # 应用策略组
   - {name: YouTube,!!merge <<: *pr}
   - {name: ChatGPT,!!merge <<: *pr}
-  - {name: Microsoft, type: select, proxies: [直连, 节点选择]}
+  - {name: Microsoft,!!merge <<: *pr}
   - {name: TikTok,!!merge <<: *pr}
   - {name: NETFLIX,!!merge <<: *pr}
   - {name: PayPal,!!merge <<: *pr}
