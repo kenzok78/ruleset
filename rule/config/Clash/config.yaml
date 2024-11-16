@@ -17,8 +17,6 @@ proxy-providers:
       interval: 300
     proxy: 🟢 直连
     url: "订阅链接2"
-
-
    
 # 全局配置
 port: 7890
