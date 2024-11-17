@@ -125,8 +125,8 @@ proxy-groups:
   - {name: 自动选择, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "^((?!(直连)).)*$"}
   - {name: 全部节点, type: select, include-all: true}
 rules:
-  - RULE-SET,private_domain,直连
-  - RULE-SET,direct1,直连
+  - RULE-SET,private_domain,DIRECT
+  - RULE-SET,direct1,DIRECT
   - RULE-SET,apple_domain,Apple
   - RULE-SET,proxylite,节点选择
   - RULE-SET,ai,ChatGPT
