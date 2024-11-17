@@ -109,7 +109,7 @@ proxy-groups:
   - {name: 节点选择, type: select, proxies: [香港自动, 日本自动, 美国自动, 自动选择, 香港节点, 日本节点, 美国节点, 全部节点]}
   - {name: YouTube,!!merge <<: *pr}
   - {name: ChatGPT,!!merge <<: *pr}
-  - {name: Microsoft,!!merge <<: *pr}
+  - {name: Microsoft, type: select, proxies: [DIRECT, 节点选择]}
   - {name: TikTok,!!merge <<: *pr}
   - {name: NETFLIX,!!merge <<: *pr}
   - {name: PayPal,!!merge <<: *pr}
