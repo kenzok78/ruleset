@@ -149,7 +149,6 @@ rule-anchor:
 rule-providers: 
   private_domain: {!!merge <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.mrs"}
   proxylite: { <<: *kenzo, url: "https://raw.githubusercontent.com/kenzok78/ruleset/refs/heads/main/clash/Proxy.list" }
-  direct1: { <<: *class, url: "https://raw.githubusercontent.com/kenzok78/ruleset/refs/heads/main/clash/Direct.list" }
   ai: { <<: *kenzo, url: "https://raw.githubusercontent.com/kenzok78/ruleset/refs/heads/main/clash/AI.list" }
   youtube_domain: {!!merge <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/youtube.mrs"}
   netflix_domain: {!!merge <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/netflix.mrs"}
