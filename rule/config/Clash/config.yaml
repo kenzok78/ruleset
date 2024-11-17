@@ -115,50 +115,39 @@ dns:
     - 223.5.5.5
   nameserver-policy:
     "rule-set:private_domain,cn_domain":
-      - 119.29.29.29
-      - 223.5.5.5
+    - 119.29.29.29
+    - 223.5.5.5
     "rule-set:geolocation-!cn":
-      - "https://dns.cloudflare.com/dns-query"
-      - "https://dns.google/dns-query"
-    "rule-set:ai":
       - "https://dns.cloudflare.com/dns-query"
       - "https://dns.google/dns-query"
  
 # 锚点
-pr: &pr {type: select, proxies: [节点选择, 自动选择, 香港节点, 日本节点, 美国节点]}
+pr: &pr {type: select, proxies: [节点选择, 香港自动, 日本自动, 美国自动, 自动选择, 香港节点, 日本节点, 美国节点, 全部节点]}
 # 策略组
 proxy-groups:
-  # 基础策略组
-  - {name: 节点选择, type: select, proxies: [自动选择, 香港节点, 日本节点, 美国节点]}
-  - {name: 全球直连, type: select, proxies: [DIRECT, 节点选择]}
-  - {name: 列表之外,!!merge <<: *pr}
-  
-  # 应用策略组
+  - {name: 节点选择, type: select, proxies: [香港自动, 日本自动, 美国自动, 自动选择, 香港节点, 日本节点, 美国节点, 全部节点]}
   - {name: YouTube,!!merge <<: *pr}
   - {name: ChatGPT,!!merge <<: *pr}
-  - {name: Microsoft,type: select, proxies: [DIRECT, 节点选择]}
+  - {name: Microsoft,!!merge <<: *pr}
   - {name: TikTok,!!merge <<: *pr}
   - {name: NETFLIX,!!merge <<: *pr}
   - {name: PayPal,!!merge <<: *pr}
   - {name: Apple, type: select, proxies: [DIRECT, 节点选择]}
-  
-  # AI专用策略组
-  - {name: OpenAI专用, type: select, proxies: [美国节点, 日本节点]}
-  - {name: Claude专用, type: select, proxies: [美国节点]}
-  - {name: Gemini专用, type: select, proxies: [美国节点, 日本节点]}
-  
-  # 地区分组
-  - {name: 香港节点, type: url-test, include-all: true, tolerance: 15, interval: 180, filter: "(?i)港|hongkong|hong kong|hk"}
-  - {name: 日本节点, type: url-test, include-all: true, tolerance: 15, interval: 180, filter: "(?i)日|jp|japan"}
-  - {name: 美国节点, type: url-test, include-all: true, tolerance: 15, interval: 180, filter: "(?i)美|us|unitedstates|united states"}
-  
-  # 自动选择
-  - {name: 自动选择, type: url-test, include-all: true, tolerance: 15, interval: 180, filter: "^((?!(直连)).)*$", lazy: true}
+  - {name: 全球直连, type: select, proxies: [DIRECT, 节点选择]}
+  - {name: 列表之外,!!merge <<: *pr}
+  - {name: 香港节点, type: select, include-all: true, filter: "(?i)港|hk|hongkong|hong kong"}
+  - {name: 日本节点, type: select, include-all: true, filter: "(?i)日|jp|japan"}
+  - {name: 美国节点, type: select, include-all: true, filter: "(?i)美|us|unitedstates|united states"}
+  - {name: 香港自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(港|HK|(?i)Hong))^((?!(台|日|韩|新|深|美)).)*$"}
+  - {name: 日本自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(日|JP|(?i)Japan))^((?!(港|台|韩|新|美)).)*$" }
+  - {name: 美国自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(美|US|(?i)States|America))^((?!(港|台|日|韩|新)).)*$"}
+  - {name: 自动选择, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "^((?!(直连)).)*$"}
+  - {name: 全部节点, type: select, include-all: true}
 rules:
   - RULE-SET,private_domain,DIRECT
-  - RULE-SET,ai,ChatGPT
   - RULE-SET,apple_domain,Apple
   - RULE-SET,proxylite,节点选择
+  - RULE-SET,ai,ChatGPT
   - RULE-SET,youtube_domain,YouTube
   - RULE-SET,microsoft_domain,Microsoft
   - RULE-SET,tiktok_domain,TikTok
