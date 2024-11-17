@@ -103,10 +103,10 @@ dns:
       - "https://dns.google/dns-query"
  
 # 锚点
-pr: &pr {type: select, proxies: [节点选择, 香港自动, 日本自动, 美国自动, 自动选择, 香港节点, 日本节点, 美国节点, 全部节点]}
+pr: &pr {type: select, proxies: [节点选择, 香港自动, 日本自动, 美国自动, 自动选择, 香港节点, 日本节点, 美国节点, 全部节点, 直连]}
 # 策略组
 proxy-groups:
-  - {name: 节点选择, type: select, proxies: [香港自动, 日本自动, 美国自动, 自动选择, 香港节点, 日本节点, 美国节点, 全部节点]}
+  - {name: 节点选择, type: select, proxies: [香港自动, 日本自动, 美国自动, 自动选择, 香港节点, 日本节点, 美国节点, 全部节点, 直连]}
   - {name: YouTube,!!merge <<: *pr}
   - {name: ChatGPT,!!merge <<: *pr}
   - {name: Microsoft, type: select, proxies: [DIRECT, 节点选择]}
