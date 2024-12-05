@@ -102,16 +102,10 @@ config openclash 'config'
 	option auto_update_time '6'
 
 config dns_servers
-	option group 'nameserver'
 	option type 'udp'
-	option ip '61.130.254.34'
-	option enabled '0'
-
-config dns_servers
-	option group 'nameserver'
-	option type 'udp'
-	option ip '61.130.254.35'
-	option enabled '0'
+	option ip '114.114.114.114'
+	option enabled '1'
+	option group 'default'
 
 config dns_servers
 	option type 'udp'
@@ -348,3 +342,4 @@ config config_subscribe
 	option sort 'false'
 	option node_type 'false'
 	option rule_provider 'false'
+
