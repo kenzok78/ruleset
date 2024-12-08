@@ -13,8 +13,7 @@
       "external_ui_download_url": "https://ghp.ci/https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip",
       "external_ui_download_detour": "🌐 全球直连",
       "default_mode": "rule"
-    }
-  },
+    },
   "cache_file": {
     "enabled": true,
     "path": "/etc/sing-box/cache.db",
@@ -24,18 +23,18 @@
   
   "dns": {
     "servers": [
-      {"tag": "dns_direct", "address": ["223.5.5.5", "119.29.29.29"], "address_strategy": "ipv4_only", "strategy": "ipv4_only", "detour": "🌐 全球直连"},
-      {"tag": "dns_proxy", "address": ["https://dns.cloudflare.com/dns-query", "https://dns.google/dns-query"], "address_resolver": "dns_direct", "address_strategy": "ipv4_only", "strategy": "ipv4_only", "detour": "🚀 节点选择"},
+      {"tag": "proxyDns", "address": "https://dns.google/dns-query", "address_resolver": "defaultDns", "address_strategy": "ipv4_only", "detour": "🚀 节点选择"},
+      {"tag": "localDns", "address": "223.5.5.5", "address_resolver": "defaultDns", "address_strategy": "ipv4_only", "detour": "🌐 全球直连"},
       {"tag": "defaultDns", "address": "223.5.5.5", "address_strategy": "ipv4_only", "detour": "🌐 全球直连"}
     ],
     "rules": [
       { "outbound": "any", "server": "defaultDns", "disable_cache": true },
-      { "clash_mode": "direct", "server": "dns_direct" },
-      { "clash_mode": "global", "server": "dns_proxy" },
-      { "rule_set": "geosite-cn", "server": "dns_direct" },
-      { "rule_set": "geosite-geolocation-!cn", "server": "dns_proxy" }
+      { "clash_mode": "direct", "server": "localDns" },
+      { "clash_mode": "global", "server": "proxyDns" },
+      { "rule_set": "geosite-cn", "server": "localDns" },
+      { "rule_set": "geosite-geolocation-!cn", "server": "proxyDns" }
     ],
-    "final": "dns_direct",
+    "final": "localDns",
     "strategy": "ipv4_only"
   },
 
@@ -127,3 +126,4 @@
       { "tag": "geoip-private", "type": "remote", "format": "binary", "url": "https://ghp.ci/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geoip/private.srs", "download_detour": "🌐 全球直连" }
     ]
   }
+}
