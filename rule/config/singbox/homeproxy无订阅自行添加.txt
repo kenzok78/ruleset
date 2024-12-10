@@ -28,7 +28,7 @@ config homeproxy 'experimental'
 	option clash_api_enabled '1'
 	option dashboard_repo 'metacubex/metacubexd'
 	option set_dash_backend '1'
-	option clash_api_secret 'QH0x447XDnB55SwGtTEMjFQJS24NqjpkKgHbXGD'
+	option clash_api_secret 'QH0x447XDNqjpkKgHbXGD'
 	option cache_file_store_rdrc '1'
 
 config homeproxy 'control'
