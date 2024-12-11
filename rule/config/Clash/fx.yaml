@@ -102,10 +102,10 @@ dns:
       - "https://dns.google/dns-query"
  
 # 锚点
-pr: &pr {type: select, proxies: [🚀 节点选择, 🔄 香港故转, 🔄 日本故转, ⚡ 香港自动, ⚡ 日本自动, ⚡ 美国自动, ⚡ 自动选择, 🇭🇰 香港节点, 🇯🇵 日本节点, 🇺🇸 美国节点, 🌍 全部节点, 🌐 直连]}
+pr: &pr {type: select, proxies: [🚀 节点选择, 🔄 香港故转, 🔄 日本故转, ⚡ 香港自动, ⚡ 日本自动, ⚡ 美国自动, ⚡ 自动选择, 🇭🇰 香港节点, 🇯🇵 日本节点, 🇺🇸 美国节点, 🌍 全部节点]}
 # 策略组
 proxy-groups:
-  - {name: 🚀 节点选择, type: select, proxies: [🔄 香港故转, 🔄 日本故转, ⚡ 香港自动, ⚡ 日本自动, ⚡ 美国自动, ⚡ 自动选择, 🇭🇰 香港节点, 🇯🇵 日本节点, 🇺🇸 美国节点, 🌍 全部节点, 🌐 直连]}
+  - {name: 🚀 节点选择, type: select, proxies: [🔄 香港故转, 🔄 日本故转, ⚡ 香港自动, ⚡ 日本自动, ⚡ 美国自动, ⚡ 自动选择, 🇭🇰 香港节点, 🇯🇵 日本节点, 🇺🇸 美国节点, 🌍 全部节点]}
   - {name: 📺 YouTube,!!merge <<: *pr}
   - {name: 🔍 Google,!!merge <<: *pr}
   - {name: 🤖 ChatGPT,!!merge <<: *pr}
