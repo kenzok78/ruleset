@@ -4,6 +4,7 @@
 DOMAIN-KEYWORD,openai
 DOMAIN-KEYWORD,anthropic
 DOMAIN-KEYWORD,Claude
+DOMAIN-KEYWORD,sora
 
 # 域名后缀匹配
 DOMAIN-SUFFIX,perplexity.ai
@@ -26,3 +27,4 @@ DOMAIN-SUFFIX,gemini.google.com
 DOMAIN-SUFFIX,makersuite.google.com
 DOMAIN-SUFFIX,anthropic.com
 DOMAIN-SUFFIX,claude.ai
+DOMAIN-SUFFIX,sora.com
