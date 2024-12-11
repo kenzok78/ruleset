@@ -108,7 +108,7 @@ proxy-groups:
   - {name: 🚀 节点选择, type: select, proxies: [🔄 香港故转, 🔄 日本故转, ⚡ 香港自动, ⚡ 日本自动, ⚡ 美国自动, ⚡ 自动选择, 🇭🇰 香港节点, 🇯🇵 日本节点, 🇺🇸 美国节点, 🌍 全部节点]}
   - {name: 📺 YouTube,!!merge <<: *pr}
   - {name: 🔍 Google,!!merge <<: *pr}
-  - {name: 🤖 ChatGPT,!!merge <<: *pr}
+  - {name: 🤖 Openai,!!merge <<: *pr}
   - {name: 🧠 Claude,!!merge <<: *pr}
   - {name: 💻 GitHub,!!merge <<: *pr}
   - {name: ☁️ OneDrive,!!merge <<: *pr}
@@ -136,8 +136,8 @@ rules:
   - RULE-SET,private_domain,DIRECT
   - RULE-SET,apple_domain,🍎 Apple
   - RULE-SET,proxylite,🚀 节点选择
-  - RULE-SET,ai,🤖 ChatGPT
-  - RULE-SET,claude_domain,🧠 Claude 
+  - RULE-SET,openai_domain,🤖 Openai
+  - RULE-SET,claude_domain,🧠 Claude
   - RULE-SET,github_domain,💻 GitHub
   - RULE-SET,youtube_domain,📺 YouTube
   - RULE-SET,google_domain,🔍 Google
@@ -161,11 +161,11 @@ rule-anchor:
   kenzo: &kenzo {type: http, interval: 86400, behavior: domain, format: text}
   class: &class {type: http, interval: 86400, behavior: classical, format: text}
 rule-providers: 
-  private_domain: {!!merge <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.mrs"}
-  proxylite: {!!merge <<: *class, url: "https://raw.githubusercontent.com/kenzok78/ruleset/refs/heads/main/rule/ProxyLite.list"}
-  ai: {!!merge <<: *class, url: "https://raw.githubusercontent.com/kenzok78/ruleset/refs/heads/main/rule/AI.list"}
-  claude_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/anthropic.mrs" }
-  youtube_domain: {!!merge <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/youtube.mrs"}
+  private_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.mrs" }
+  proxylite: { <<: *class, url: "https://raw.githubusercontent.com/kenzok78/ruleset/main/rule/ProxyLite.list" }
+  openai_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/openai.mrs" }
+  claude_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/anthropic.mrs" }
+  youtube_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/youtube.mrs" }
   google_domain: {!!merge <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google.mrs"}
   github_domain: {!!merge <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/github.mrs"}
   telegram_domain: {!!merge <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/telegram.mrs"}
