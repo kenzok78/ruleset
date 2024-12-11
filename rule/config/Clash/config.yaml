@@ -50,6 +50,7 @@ proxy-groups:
   - {name: 📺 YouTube, <<: *pr}
   - {name: 🔍 Google, <<: *pr}
   - {name: 🤖 ChatGPT, <<: *pr}
+  - {name: 🧠 Claude, <<: *pr}
   - {name: 💻 GitHub, <<: *pr}
   - {name: ☁️ OneDrive, <<: *pr}
   - {name: 🪟 Microsoft, <<: *pr}
@@ -77,6 +78,7 @@ rules:
   - RULE-SET,apple_domain,🍎 Apple
   - RULE-SET,proxylite,🚀 节点选择
   - RULE-SET,ai,🤖 ChatGPT
+  - RULE-SET,claude_domain,🧠 Claude
   - RULE-SET,github_domain,💻 GitHub
   - RULE-SET,youtube_domain,📺 YouTube
   - RULE-SET,google_domain,🔍 Google
@@ -103,6 +105,7 @@ rule-providers:
   private_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.mrs" }
   proxylite: { <<: *class, url: "https://raw.githubusercontent.com/kenzok78/ruleset/refs/heads/main/rule/ProxyLite.list" }
   ai: { <<: *class, url: "https://raw.githubusercontent.com/kenzok78/ruleset/refs/heads/main/rule/AI.list" }
+  claude_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/anthropic.mrs" }
   youtube_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/youtube.mrs" }
   google_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google.mrs" }
   github_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/github.mrs" }
