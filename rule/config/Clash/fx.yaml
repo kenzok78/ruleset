@@ -133,7 +133,7 @@ proxy-groups:
   - {name: 🌍 全部节点, type: select, include-all: true}
 
 rules:
-  - RULE-SET,private_domain,🌐 直连
+  - RULE-SET,private_domain,DIRECT
   - RULE-SET,apple_domain,🍎 Apple
   - RULE-SET,proxylite,🚀 节点选择
   - RULE-SET,ai,🤖 ChatGPT
