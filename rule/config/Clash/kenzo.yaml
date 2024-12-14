@@ -17,7 +17,6 @@ proxy-providers:
       interval: 300
     proxy: 🌐 直连
     url: "订阅地址2"
-
   Airport_03:
    type: http
    interval: 1800
