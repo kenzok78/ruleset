@@ -1,5 +1,5 @@
 proxy-providers:
-  订阅1:
+  Airport_01:
     type: http
     interval: 1800
     health-check:
@@ -8,7 +8,7 @@ proxy-providers:
       interval: 300
     proxy: 🌐 直连
     url: "订阅地址"
-   订阅2:
+   Airport_02:
     type: http
     interval: 1800
     health-check:
