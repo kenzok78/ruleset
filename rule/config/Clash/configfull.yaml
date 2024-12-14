@@ -117,17 +117,20 @@ dns:
     - geosite:private
     - geosite:cn
 default-nameserver:
-    - 119.29.29.29
-    - 223.5.5.5
-  proxy-server-nameserver:
-    - 223.5.5.5
-    - 119.29.29.29
-  nameserver:
-    - https://doh.pub/dns-query
+  - 119.29.29.29
+  - 223.5.5.5
+proxy-server-nameserver:
+  - 119.29.29.29
+  - 223.5.5.5
+nameserver:
+  - https://doh.pub/dns-query
+  - https://dns.alidns.com/dns-query
+nameserver-policy:
+  "rule-set:private_domain,cn_domain":
     - https://dns.alidns.com/dns-query
-  nameserver-policy:
-    "rule-set:private_domain,cn_domain":
-    "rule-set:geolocation-!cn":
+  "rule-set:geolocation-!cn":
+    - https://dns.cloudflare.com/dns-query
+    - https://dns.google/dns-query
  
 # 锚点
 aipr: &pr {type: select, proxies: [🚀 节点选择, ♻️ 香港自动, ♻️ 日本自动, ♻️ 美国自动, ♻️ 集合自动, ♻️ 自动选择, 🇭🇰 香港节点, 🇯🇵 日本节点, 🇺🇲 美国节点, JH 集合节点, 🌍 全部节点]}
