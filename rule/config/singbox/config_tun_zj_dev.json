@@ -64,12 +64,14 @@
   ],
 
   "outbounds": [
-    { "tag": "🚀 节点选择", "type": "selector", "outbounds": ["节点名字1", "节点名字2"] },
-    { "tag": "🤖 OpenAI", "type": "selector", "outbounds": ["节点名字1", "节点名字2"] },
+    { "tag": "🚀 节点选择", "type": "selector", "outbounds": ["节点1", "节点2"] },
+    { "tag": "🔮 OpenAI", "type": "selector", "outbounds": ["节点1", "节点2"] },
+    { "tag": "🧠 Claude", "type": "selector", "outbounds": ["节点1", "节点2"] },
+    { "tag": "🤖 Gemini", "type": "selector", "outbounds": ["节点1", "节点2"] },
     { "tag": "🌐 全球直连", "type": "direct" },
     { "tag": "dns-out", "type": "dns" },
        {
-      "tag": "节点名字1",
+      "tag": "节点1",
       "type": "hysteria2",
       "server": "154.204.183.217",
       "server_port": 60449,
@@ -81,7 +83,7 @@
       }
     },
     {
-      "tag": "节点名字2",
+      "tag": "节点2",
       "type": "vmess",
       "server": "154.204.183.217",
       "server_port": 8880,
@@ -107,13 +109,17 @@
       { "clash_mode": "global", "outbound": "GLOBAL" },
       { "domain": ["clash.razord.top", "yacd.metacubex.one", "yacd.haishan.me", "d.metacubex.one"], "outbound": "🌐 全球直连" },
       { "rule_set": "geosite-private", "outbound": "🌐 全球直连" },
-      { "rule_set": "geosite-chat", "outbound": "🤖 OpenAI" },  
+      { "rule_set": "geosite-openai", "outbound": "🔮 OpenAI" },
+      { "rule_set": "geosite-claude", "outbound": "🧠 Claude" },
+      { "rule_set": "geosite-gemini", "outbound": "🤖 Gemini" },
       { "rule_set": "geosite-geolocation-!cn", "outbound": "🚀 节点选择" },
       { "rule_set": ["geoip-cn", "geosite-cn"], "outbound": "🌐 全球直连" }
     ],
     
     "rule_set": [
-      { "tag": "geosite-chat", "type": "remote", "format": "binary", "url": "https://ghp.ci/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/category-ai-chat-!cn.srs", "download_detour": "🌐 全球直连" },
+      { "tag": "geosite-openai", "type": "remote", "format": "binary", "url": "https://ghp.ci/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/openai.srs", "download_detour": "🌐 全球直连" },
+      { "tag": "geosite-gemini", "type": "remote", "format": "binary", "url": "https://ghp.ci/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/google-gemini.srs", "download_detour": "🌐 全球直连" },
+      { "tag": "geosite-claude", "type": "remote", "format": "binary", "url": "https://ghp.ci/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/anthropic.srs", "download_detour": "🌐 全球直连" },
       { "tag": "geosite-geolocation-!cn", "type": "remote", "format": "binary", "url": "https://ghp.ci/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/geolocation-!cn.srs", "download_detour": "🌐 全球直连" },
       { "tag": "geoip-cn", "type": "remote", "format": "binary", "url": "https://ghp.ci/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geoip/cn.srs", "download_detour": "🌐 全球直连" },
       { "tag": "geosite-cn", "type": "remote", "format": "binary", "url": "https://ghp.ci/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/cn.srs", "download_detour": "🌐 全球直连" },
