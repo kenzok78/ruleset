@@ -8,15 +8,6 @@ proxy-providers:
       interval: 300
     proxy: 🌐 直连
     url: "订阅地址"
-   Airport_02:
-    type: http
-    interval: 1800
-    health-check:
-      enable: true
-      url: https://www.gstatic.com/generate_204
-      interval: 300
-    proxy: 🌐 直连
-    url: "订阅地址2"
 
 unified-delay: true
 tcp-concurrent: true
