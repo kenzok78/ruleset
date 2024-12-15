@@ -25,8 +25,8 @@
  {
    "servers": 
    [
-     {"tag": "dns_direct", "address": "223.5.5.5", "address_strategy": "ipv4_only", "strategy": "ipv4_only", "detour": "🌐 全球直连"},
-     {"tag": "dns_proxy", "address": "tls://8.8.8.8", "address_strategy": "ipv4_only", "strategy": "ipv4_only", "detour": "🚀 节点选择"}
+     { "tag": "dns_direct", "address": "223.5.5.5", "address_strategy": "ipv4_only", "strategy": "ipv4_only", "detour": "🌐 全球直连"},
+     { "tag": "dns_proxy", "address": "tls://8.8.8.8", "address_strategy": "ipv4_only", "strategy": "ipv4_only", "detour": "🚀 节点选择"}
    ],
    "rules": 
    [
@@ -71,16 +71,17 @@
     { "tag": "♻ 日本自动", "type": "urltest", "use_all_providers": true, "includes": ["🇯🇵|日本|JP|JAPAN|Japan"]}, 
     { "tag": "♻ 美国自动", "type": "urltest", "use_all_providers": true, "includes": ["🇺🇸|美国|US|UNITED STATES|United States"]},
     { "tag": "♻ 集合自动", "type": "urltest", "use_all_providers": true, "includes": ["台|tw|taiwan|韩|kr|korea|新|sg|singapore"]},
-    {"tag": "♻️ 自动选择", "type": "urltest", "use_all_providers": true, "excludes": "网站|地址|剩余|过期|时间|有效"},
-    {"tag": "🌐 全球直连", "type": "direct"},
-    {"tag": "dns-out", "type": "dns"}
+    { "tag": "♻️ 自动选择", "type": "urltest", "use_all_providers": true, "excludes": "网站|地址|剩余|过期|时间|有效"},
+    { "tag": "🌐 全球直连", "type": "direct"},
+    { "tag": "dns-out", "type": "dns"}
   ],
   
   "route": {
         "auto_detect_interface": true,
         "final": "🔍 列表之外",
     "rules": [
-      { "type": "logical", "mode": "or", "rules": [{ "port": 53 }, { "protocol": "dns" }], "outbound": "dns-out" },
+      {"action": "sniff"},
+      {"protocol": "dns", "action": "hijack-dns"}
       { "clash_mode": "direct", "outbound": "🌐 全球直连" },
       { "clash_mode": "global", "outbound": "GLOBAL" },
       { "domain": ["clash.razord.top", "yacd.metacubex.one", "yacd.haishan.me", "d.metacubex.one"], "outbound": "🌐 全球直连" },
@@ -114,7 +115,6 @@
       { "tag": "geosite-cn", "type": "remote", "format": "binary", "url": "https://ghp.ci/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/cn.srs", "download_detour": "🌐 全球直连" },
       { "tag": "geosite-private", "type": "remote", "format": "binary", "url": "https://ghp.ci/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/private.srs", "download_detour": "🌐 全球直连" },            
       { "tag": "geoip-google", "type": "remote", "format": "binary", "url": "https://ghp.ci/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geoip/google.srs", "download_detour": "🌐 全球直连" },
-      { "tag": "geoip-telegram", "type": "remote", "format": "binary", "url": "https://ghp.ci/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geoip/telegram.srs", "download_detour": "🌐 全球直连" },     
       { "tag": "geoip-netflix", "type": "remote", "format": "binary", "url": "https://ghp.ci/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geoip/netflix.srs", "download_detour": "🌐 全球直连" },     
       { "tag": "geoip-apple", "type": "remote", "format": "binary", "url": "https://ghp.ci/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo-lite/geoip/apple.srs", "download_detour": "🌐 全球直连" },
       { "tag": "geoip-cn", "type": "remote", "format": "binary", "url": "https://ghp.ci/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geoip/cn.srs", "download_detour": "🌐 全球直连" },
