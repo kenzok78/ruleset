@@ -87,12 +87,11 @@ dns:
   default-nameserver:
     - 223.5.5.5
     - 119.29.29.29
-  proxy-server-nameserver:
-    - 223.5.5.5
-    - 119.29.29.29
   nameserver:
     - 223.5.5.5
     - 119.29.29.29
+    - "https://dns.cloudflare.com/dns-query"
+    - "https://dns.google/dns-query"
   nameserver-policy:
     "rule-set:private_domain,cn_domain":
     - 223.5.5.5
