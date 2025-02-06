@@ -118,18 +118,13 @@ dns:
     - geosite:cn
   default-nameserver:
     - 223.5.5.5
-    - 119.29.29.29
+    - 119.29.19.29
   nameserver:
     - https://doh.pub/dns-query
     - https://dns.alidns.com/dns-query
   nameserver-policy:
     "rule-set:private_domain,cn_domain":
-      - https://dns.alidns.com/dns-query
-      - 223.5.5.5
     "rule-set:geolocation-!cn":
-      - https://doh.pub/dns-query
-      - https://dns.cloudflare.com/dns-query
- 
 # 锚点
 aipr: &pr {type: select, proxies: [🚀 节点选择, ♻️ 香港自动, ♻️ 日本自动, ♻️ 美国自动, ♻️ 集合自动, ♻️ 自动选择, 🇭🇰 香港节点, 🇯🇵 日本节点, 🇺🇲 美国节点, 🇺🇳 集合节点, 🌍 全部节点]}
 # 策略组
