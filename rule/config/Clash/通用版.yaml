@@ -1,4 +1,6 @@
-# 公共模板（已去除个人订阅信息）
+# 通用版模板（已去除个人订阅信息）
+# 兼容客户端：Clash Verge / FlClash / luci-app-fchomo / luci-app-momo / luci-app-nikki / luci-app-openclash(Meta内核)
+# 注意：luci-app-openclash 请在“内核设置”中选择 Meta(Mihomo) 内核；Clash Premium 内核不支持 mrs 规则格式。
 proxy-providers:
   机场1:
     type: http
@@ -27,6 +29,9 @@ proxy-providers:
       interval: 300
     proxy: 🌐 直连
     url: "订阅3"
+
+provider-anchor:
+  all: &all [机场1, 机场2, 机场3]
 
 unified-delay: true
 tcp-concurrent: true
@@ -70,18 +75,18 @@ proxy-groups:
   - {name: 🍎 Apple, type: select, proxies: [🌐 直连, 🚀 节点选择]}
   - {name: 🎯 全球直连, type: select, proxies: [🌐 直连, 🚀 节点选择]}
   - {name: 🌀 列表之外, <<: *pr}
-  - {name: 🇭🇰 香港节点, type: select, include-all: true, filter: "(?i)港|hk|hongkong|hong kong"}
-  - {name: 🇯🇵 日本节点, type: select, include-all: true, filter: "(?i)日|jp|japan"}
-  - {name: 🇺🇲 美国节点, type: select, include-all: true, filter: "(?i)美|us|unitedstates|united states"}
-  - {name: 🇸🇬 新加坡节点, type: select, include-all: true, filter: "(?i)新|sg|singapore"}
-  - {name: 🇺🇳 集合节点, type: select, include-all: true, filter: "(?i)台|tw|taiwan|韩|kr|korea"}
-  - {name: ♻️ 香港自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(港|HK|(?i)Hong))^((?!(台|日|韩|新|深|美)).)*$"}
-  - {name: ♻️ 日本自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(日|JP|(?i)Japan))^((?!(港|台|韩|新|美)).)*$"}
-  - {name: ♻️ 美国自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(美|US|(?i)States|America))^((?!(港|台|日|韩|新)).)*$"}
-  - {name: ♻️ 新加坡自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(新|SG|(?i)Singapore))^((?!(港|台|日|韩|美)).)*$"}
-  - {name: ♻️ 集合自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?i)台|tw|taiwan|韩|kr|korea"}
-  - {name: ♻️ 自动选择, type: url-test, include-all: true, tolerance: 20, interval: 300}
-  - {name: 🌍 全部节点, type: select, include-all: true}
+  - {name: 🇭🇰 香港节点, type: select, use: *all, filter: "(?i)港|hk|hongkong|hong kong"}
+  - {name: 🇯🇵 日本节点, type: select, use: *all, filter: "(?i)日|jp|japan"}
+  - {name: 🇺🇲 美国节点, type: select, use: *all, filter: "(?i)美|us|unitedstates|united states"}
+  - {name: 🇸🇬 新加坡节点, type: select, use: *all, filter: "(?i)新|sg|singapore"}
+  - {name: 🇺🇳 集合节点, type: select, use: *all, filter: "(?i)台|tw|taiwan|韩|kr|korea"}
+  - {name: ♻️ 香港自动, type: url-test, use: *all, tolerance: 20, interval: 300, filter: "(?=.*(港|HK|(?i)Hong))^((?!(台|日|韩|新|深|美)).)*$"}
+  - {name: ♻️ 日本自动, type: url-test, use: *all, tolerance: 20, interval: 300, filter: "(?=.*(日|JP|(?i)Japan))^((?!(港|台|韩|新|美)).)*$"}
+  - {name: ♻️ 美国自动, type: url-test, use: *all, tolerance: 20, interval: 300, filter: "(?=.*(美|US|(?i)States|America))^((?!(港|台|日|韩|新)).)*$"}
+  - {name: ♻️ 新加坡自动, type: url-test, use: *all, tolerance: 20, interval: 300, filter: "(?=.*(新|SG|(?i)Singapore))^((?!(港|台|日|韩|美)).)*$"}
+  - {name: ♻️ 集合自动, type: url-test, use: *all, tolerance: 20, interval: 300, filter: "(?i)台|tw|taiwan|韩|kr|korea"}
+  - {name: ♻️ 自动选择, type: url-test, use: *all, tolerance: 20, interval: 300}
+  - {name: 🌍 全部节点, type: select, use: *all}
 
 rules:
   - RULE-SET,private_domain,🌐 直连
