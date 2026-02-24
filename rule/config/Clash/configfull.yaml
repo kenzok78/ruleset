@@ -1,6 +1,6 @@
 # 机场订阅，名称不能重复
 proxy-providers:
-  Airport_01:
+  机场1:
     type: http
     interval: 1800
     health-check:
@@ -9,7 +9,7 @@ proxy-providers:
       interval: 300
     proxy: DIRECT
     url: "订阅1"
-  Airport_02:
+  机场2:
     type: http
     interval: 1800
     health-check:
@@ -18,7 +18,7 @@ proxy-providers:
       interval: 300
     proxy: DIRECT
     url: "订阅2"
-  Airport_03:
+  机场3:
     type: http
     interval: 1800
     health-check:
