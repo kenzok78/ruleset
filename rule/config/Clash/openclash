@@ -326,7 +326,7 @@ config dns_servers
 config authentication
 	option enabled '1'
 	option username 'Clash'
-	option password '2ZMJzTP1'
+	option password '请改为你自己的面板密码'
 
 config config_subscribe
 	option enabled '1'
@@ -342,4 +342,3 @@ config config_subscribe
 	option sort 'false'
 	option node_type 'false'
 	option rule_provider 'false'
-
