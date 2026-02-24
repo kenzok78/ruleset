@@ -108,6 +108,7 @@ proxy-groups:
   - {name: 🔮 OpenAI, <<: *pr}
   - {name: 🧠 Claude, <<: *pr}  
   - {name: 🤖 Gemini, <<: *pr}  
+  - {name: 🐦 Twitter, <<: *pr}
   - {name: 📦 GitHub, <<: *pr}
   - {name: Ⓜ️ Microsoft, <<: *pr}
   - {name: 🎵 TikTok, <<: *pr}
@@ -134,7 +135,9 @@ rules:
   - RULE-SET,openai_domain,🔮 OpenAI
   - RULE-SET,claude_domain,🧠 Claude 
   - RULE-SET,gemini_domain,🤖 Gemini
+  - RULE-SET,twitter_domain,🐦 Twitter
   - RULE-SET,github_domain,📦 GitHub
+  - RULE-SET,microsoft_domain,Ⓜ️ Microsoft
   - RULE-SET,youtube_domain,▶️ YouTube
   - RULE-SET,google_domain,🔍 Google
   - RULE-SET,tiktok_domain,🎵 TikTok
@@ -158,6 +161,7 @@ rule-providers:
   openai_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/openai.mrs" }
   claude_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/anthropic.mrs" }
   gemini_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google-gemini.mrs" }
+  twitter_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/twitter.mrs" }
   youtube_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/youtube.mrs" }
   google_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google.mrs" }
   github_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/github.mrs" }
