@@ -4,7 +4,7 @@
 proxy-providers:
   机场1:
     type: http
-    interval: 1800
+    interval: 86400
     health-check:
       enable: true
       url: https://www.gstatic.com/generate_204
@@ -13,7 +13,7 @@ proxy-providers:
     url: "订阅1"
   机场2:
     type: http
-    interval: 1800
+    interval: 86400
     health-check:
       enable: true
       url: https://www.gstatic.com/generate_204
@@ -22,7 +22,7 @@ proxy-providers:
     url: "订阅2"
   机场3:
     type: http
-    interval: 1800
+    interval: 86400
     health-check:
       enable: true
       url: https://www.gstatic.com/generate_204

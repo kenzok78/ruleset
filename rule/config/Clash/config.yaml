@@ -1,7 +1,7 @@
 proxy-providers:
   机场1:
     type: http
-    interval: 1800
+    interval: 86400
     health-check:
       enable: true
       url: https://www.gstatic.com/generate_204
