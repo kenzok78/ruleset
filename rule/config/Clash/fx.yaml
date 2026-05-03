@@ -118,6 +118,7 @@ proxy-groups:
   - {name: 📺 NETFLIX, <<: *pr}
   - {name: 💳 PayPal, <<: *pr}
   - {name: 🍎 Apple, type: select, proxies: [DIRECT, 🚀 节点选择]}
+  - {name: 📲 APNs 推送, type: select, proxies: [🚀 节点选择, ♻️ 自动选择, DIRECT]}
   - {name: 🎯 全球直连, type: select, proxies: [DIRECT, 🚀 节点选择]}
   - {name: 🌀 列表之外, <<: *pr}
   - {name: 🇭🇰 香港节点, type: select, include-all: true, filter: "(?i)港|hk|hongkong|hong kong"}
@@ -135,6 +136,7 @@ proxy-groups:
 rules:
   - RULE-SET,private_domain,DIRECT
   - RULE-SET,direct1,DIRECT
+  - RULE-SET,apple_push,📲 APNs 推送
   - RULE-SET,apple_domain,🍎 Apple
   - RULE-SET,proxylite,🚀 节点选择
   - RULE-SET,openai_domain,🔮 OpenAI
@@ -174,6 +176,7 @@ rule-providers:
   paypal_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/paypal.mrs" }
   onedrive_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/onedrive.mrs" }
   microsoft_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/microsoft.mrs" }
+  apple_push: { <<: *class, url: "https://raw.githubusercontent.com/kenzok78/ruleset/main/rule/ApplePush.list" }
   apple_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/apple-cn.mrs" }
   tiktok_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/tiktok.mrs" }
   gfw_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/gfw.mrs" }
