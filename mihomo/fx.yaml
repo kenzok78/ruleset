@@ -1,3 +1,21 @@
+# ============================================================
+# 覆写模板（Overwrite / Merge）
+# ============================================================
+# 本文件**不含订阅和节点**，只有 global / dns / tun / sniffer /
+# proxy-groups / rules / rule-providers。
+#
+# 用法：
+#   - Clash Verge Rev：「订阅」→ 右上角「覆写」→ 新建，把本文件内容贴进去
+#   - OpenClash：「覆写设置」→ 自定义配置文件，把本文件内容粘进去
+#
+# 设计上和其他模板不同的一点：直连目标统一写 `DIRECT`（mihomo 内置），
+# 不写 `🌐 直连`。因为覆写是叠加在别人生成的配置上的，
+# 不能假设主配置里一定定义了 `🌐 直连` 这个 proxy。
+#
+# 节点组用 include-all + 地区 filter，不绑定任何具体订阅，
+# 所以覆写到哪个机场配置上都能用。
+# ============================================================
+
 # 全局配置
 port: 7890
 socks-port: 7891
@@ -51,8 +69,7 @@ sniffer:
   skip-domain:
     - "Mijia Cloud"
     - "dlg.io.mi.com"
-    - "+.push.apple.com"
-    - "+.apple.com"
+    - "+.push.apple.com"   # 只跳过推送域名，不要整段跳过 apple.com
     
 # 代理模式
 tun:
@@ -98,7 +115,8 @@ dns:
       - 223.5.5.5
     "rule-set:geolocation-!cn":
       - https://doh.pub/dns-query
-      - https://dns.cloudflare.com/dns-query
+      # 用 IP 而不是 dns.cloudflare.com —— 后者在国内解析不到，DoH 还没握手就先挂了
+      - https://1.1.1.1/dns-query
  
 # 锚点
 aipr: &pr {type: select, proxies: [🚀 节点选择, ♻️ 香港自动, ♻️ 日本自动, ♻️ 美国自动, ♻️ 新加坡自动, ♻️ 集合自动, ♻️ 自动选择, 🇭🇰 香港节点, 🇯🇵 日本节点, 🇺🇲 美国节点, 🇸🇬 新加坡节点, 🇺🇳 集合节点, 🌍 全部节点]}
@@ -178,7 +196,6 @@ rule-providers:
   apple_push: { <<: *class, url: "https://raw.githubusercontent.com/kenzok78/ruleset/main/rule/ApplePush.list" }
   apple_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/apple-cn.mrs" }
   tiktok_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/tiktok.mrs" }
-  gfw_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/gfw.mrs" }
   geolocation-!cn: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/geolocation-!cn.mrs" }
   cn_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cn.mrs" }
   cn_ip: { <<: *ip, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/cn.mrs" }

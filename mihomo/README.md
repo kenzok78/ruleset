@@ -9,7 +9,7 @@
 | `config-compat.yaml` | Clash Premium 内核 | 全部 text/yaml 规则，不用 mrs |
 | `kenzo.yaml` | 自用 | 个人模板，订阅已占位化 |
 | `openclash/` | OpenClash 专用 | `openclash.uci` 是 UCI 配置，`kenzo.ini` / `kenzo_mini.ini` 是 OpenClash 的自定义规则集订阅格式，都不是 Clash 配置 |
-| `fx.yaml` | 旧版带端口转发 | 保留兼容，不建议新用 |
+| `fx.yaml` | 覆写模板（Overwrite） | **不含订阅和节点**，只有 global / dns / tun / proxy-groups / rules。配合 Clash Verge 的「覆写 / Overwrite」或 OpenClash 的「覆写设置」叠加到自己的配置上，直连目标统一写 `DIRECT` 而不是 `🌐 直连`，因为覆写时不确定主配置有没有定义后者 |
 
 ## 客户端对应
 
