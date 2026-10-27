@@ -1,0 +1,210 @@
+# ============================================================
+# dae 配置 · 完整版（AI 分组 + 国内外 DNS 分流）
+# ============================================================
+# 适用：dae / daed（含 luci-app-daede）
+#
+# 依赖 geo 数据：
+#   /usr/share/v2ray/geosite.dat
+#   /usr/share/v2ray/geoip.dat
+#   OpenWrt 上装 v2ray-geosite + v2ray-geoip 即可，
+#   luci-app-daede 的「更新 geo」会下载 Loyalsoldier 的版本。
+#
+# 三个必须改的地方：
+#   1. subscription 里的 sub 换成你的订阅（只支持 v2ray/URL 格式，不支持 mihomo 格式）
+#   2. global 里的 lan_interface（x86 软路由一般是 br-lan，用 ip a 确认）
+#   3. group 里的地区正则，改成你机场节点命名里真实出现的关键字
+#
+# 注意：dae 的组名只支持英文和数字，不能用中文和 emoji。
+# ============================================================
+
+# ---------------- 订阅 ----------------
+# 只支持 v2ray / URL 格式的订阅链接。
+# 如果你的机场只给 mihomo 格式，用 sub-store 转一下，或者改用下面的 node 手写。
+subscription {
+    sub: 'https://example.com/sub'
+}
+
+# 手写节点示例（不想用订阅就打开这段）：
+# node {
+#     my_vps: 'hysteria2://密码@vps.example.com:443/?sni=vps.example.com'
+#     # 链式代理：落地 -> 前置
+#     relay: 'vless://UUID@us.example.com:443?security=tls&sni=us.example.com -> trojan://密码@hk.example.com:443?sni=hk.example.com'
+# }
+
+# ---------------- 策略组 ----------------
+# policy 可选：
+#   min_moving_avg  移动平均延迟最低（推荐，比 min 稳）
+#   min_avg10       近 10 次平均延迟最低
+#   min             最近一次延迟最低
+#   random          随机
+#   fixed(n)        固定组内第 n 个（从 0 开始数）
+#
+# filter 里的 `!name(regex: '排除')` 用来把「剩余流量 / 到期时间」这类假节点剔掉。
+group {
+    # 总出口
+    Proxy {
+        filter: name(regex: '🇭🇰|HK|hk|香港|港|HongKong') && !name(regex: '排除')
+        policy: min_moving_avg
+    }
+
+    # --- AI：每家单独一组，按需要换地区 ---
+    OpenAI {
+        filter: name(regex: '🇺🇸|US|us|美国|美|United States') && !name(regex: '排除')
+        policy: min_moving_avg
+    }
+    Claude {
+        filter: name(regex: '🇺🇸|US|us|美国|美|United States') && !name(regex: '排除')
+        policy: min_moving_avg
+    }
+    Gemini {
+        filter: name(regex: '🇺🇸|US|us|美国|美|United States') && !name(regex: '排除')
+        policy: min_moving_avg
+    }
+    AI {
+        filter: name(regex: '🇺🇸|US|us|美国|美|United States') && !name(regex: '排除')
+        policy: min_moving_avg
+    }
+
+    # --- 常用平台 ---
+    YouTube {
+        filter: name(regex: '🇭🇰|HK|hk|香港|港|HongKong') && !name(regex: '排除')
+        policy: min_moving_avg
+    }
+    Google {
+        filter: name(regex: '🇭🇰|HK|hk|香港|港|HongKong') && !name(regex: '排除')
+        policy: min_moving_avg
+    }
+    Github {
+        filter: name(regex: '🇯🇵|JP|jp|日本|日|Japan') && !name(regex: '排除')
+        policy: min_moving_avg
+    }
+    Telegram {
+        filter: name(regex: '🇭🇰|HK|hk|香港|港|HongKong') && !name(regex: '排除')
+        policy: min_moving_avg
+    }
+    TikTok {
+        filter: name(regex: '🇺🇸|US|us|美国|美|United States') && !name(regex: '排除')
+        policy: min_moving_avg
+    }
+    Netflix {
+        filter: name(regex: '🇺🇸|US|us|美国|美|United States') && !name(regex: '排除')
+        policy: min_moving_avg
+    }
+    Wallet {
+        filter: name(regex: '🇺🇸|US|us|美国|美|United States') && !name(regex: '排除')
+        policy: min_moving_avg
+    }
+    Steam {
+        filter: name(regex: '🇭🇰|HK|hk|香港|港|HongKong') && !name(regex: '排除')
+        policy: min_moving_avg
+    }
+    Microsoft {
+        filter: name(regex: '🇯🇵|JP|jp|日本|日|Japan') && !name(regex: '排除')
+        policy: min_moving_avg
+    }
+    OneDrive {
+        filter: name(regex: '🇯🇵|JP|jp|日本|日|Japan') && !name(regex: '排除')
+        policy: min_moving_avg
+    }
+    Apple {
+        filter: name(regex: '🇭🇰|HK|hk|香港|港|HongKong') && !name(regex: '排除')
+        policy: min_moving_avg
+    }
+
+    # 漏网之鱼：不带任何地区过滤，全部节点参与
+    Final {
+        filter: !name(regex: '官网|剩余|流量|套餐|免费|订阅|到期时间|直连|Expire Date|Traffic|ExpireDate')
+        policy: min_moving_avg
+    }
+}
+
+# ---------------- DNS ----------------
+dns {
+    upstream {
+        remote: 'https://8.8.8.8/dns-query'
+        local: 'https://223.5.5.5/dns-query'
+    }
+    routing {
+        request {
+            # 关掉 HTTPS/SVCB 与 AAAA，简化解析链路
+            qtype(https, svcb) -> reject
+            qtype(aaaa) -> reject
+
+            # Google Play 商店靠这两个后缀，必须走国外 DNS，否则商店更新失败
+            qname(suffix: googleapis.cn, suffix: xn--ngstr-lra8j.com) -> remote
+
+            # 国内域名走国内 DNS
+            qname(geosite: cn, geosite: microsoft@cn, geosite: apple@cn, geosite: private) -> local
+            # 国外域名走国外 DNS
+            qname(geosite: geolocation-!cn) -> remote
+            fallback: remote
+        }
+        response {
+            # 国外 DNS 返回国内 IP（CDN 有国内节点）时，改用国内 DNS 重查，拿到就近节点
+            upstream(remote) && ip(geoip: cn) -> local
+            fallback: accept
+        }
+    }
+}
+
+# ---------------- 分流 ----------------
+routing {
+    # 组播地址不代理
+    dip(224.0.0.0/3, 'ff00::/8') -> direct
+    # 封掉 DoT，防止 App 绕过 dae 自己加密解析
+    dport(853) -> block
+    # 局域网地址直连
+    dip(geoip: private) -> direct
+    # 拦掉 QUIC（443/UDP），强制回落 TCP，让按域名分流真正生效
+    # 不想用就注释掉这行
+    l4proto(udp) && dport(443) -> block
+
+    # --- AI：顺序不能乱，先具体后笼统 ---
+    domain(geosite: openai) -> OpenAI
+    domain(geosite: anthropic) -> Claude
+    domain(geosite: google-gemini) -> Gemini
+    # Muse 暂未加：确认是哪个产品后，用 domain(suffix: xxx.com) -> Muse 补上
+    # category-ai-!cn 会兜住上面三家之外的所有 AI 站
+    domain(geosite: category-ai-!cn) -> AI
+
+    # --- 常用平台 ---
+    domain(suffix: googleapis.cn, suffix: xn--ngstr-lra8j.com) -> Google
+    domain(geosite: youtube) -> YouTube
+    domain(geosite: google) -> Google
+    domain(geosite: github) -> Github
+    domain(geosite: onedrive) -> OneDrive
+    domain(geosite: microsoft@cn) -> direct
+    domain(geosite: microsoft) -> Microsoft
+    domain(geosite: apple@cn) -> direct
+    domain(geosite: apple) -> Apple
+    domain(geosite: telegram) -> Telegram
+    domain(geosite: tiktok) -> TikTok
+    domain(geosite: netflix) -> Netflix
+    domain(geosite: paypal, geosite: binance, geosite: okx, geosite: category-cryptocurrency) -> Wallet
+    domain(geosite: steam@cn) -> direct
+    domain(geosite: steam) -> Steam
+
+    # --- 兜底 ---
+    # 注意：国内 IP 兜底放在域名规则之后。
+    # 如果放到最上面，国外域名解析到国内 CDN 节点时会被误判成直连。
+    dip(geoip: cn) -> direct
+    domain(geosite: geolocation-!cn) -> Proxy
+    fallback: Final
+}
+
+# ---------------- 全局 ----------------
+global {
+    # 局域网网卡。OpenWrt x86 一般是 br-lan；单网口设备可能是 eth0
+    # 查法：ip a 看哪个接口的 inet 地址是你网关地址
+    lan_interface: br-lan
+    wan_interface: auto
+    auto_config_kernel_parameter: true
+    so_mark_from_dae: 0
+    # domain 模式：交给 dae 按域名决定出口，不需要等 DNS 解析完
+    dial_mode: domain
+    tls_implementation: utls
+    bootstrap_resolver: '119.29.29.29:53'
+    log_level: info
+    check_interval: 30s
+    check_tolerance: 50ms
+}

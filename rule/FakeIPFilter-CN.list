@@ -1,0 +1,137 @@
+# Fake-IP Filter · 国内段
+#
+# 作用：命中这些域名的请求不使用 fake-ip，直接走真实 DNS 解析。
+# 用法：mihomo fake-ip-filter 里引用 `rule-set:fakeipfilter_cn`，
+#       同时可放进 nameserver-policy 指定国内 DNS。
+#
+# 为什么要分国内 / 国外两份：国内域名用国内 DNS 解析更近，国外域名用国外 DNS 才准。
+#
+# 来源：社区通用 fake-ip-filter 列表（sukkaw / ACL4SSR 衍生）+ kenzok78 自用补充
+
+# ============ LAN / 私有域 ============
+localhost
+*.lan
+*.localdomain
+*.example
+*.invalid
+*.localhost
+*.test
+*.local
+*.home.arpa
+*.direct
+PDC._msDCS.*.*
+DC._msDCS.*.*
+GC._msDCS.*.*
+*.router.asus.com
+*.plex.direct
+
+# ============ NTP 国内 ============
+time1.cloud.tencent.com
+time.*.edu.cn
+*.time.edu.cn
+*.ntp.org.cn
+ntp.aliyun.com
+ntp1.aliyun.com
+ntp2.aliyun.com
+ntp3.aliyun.com
+ntp4.aliyun.com
+ntp5.aliyun.com
+ntp6.aliyun.com
+ntp7.aliyun.com
+ntp.tencent.com
+ntp1.tencent.com
+ntp2.tencent.com
+ntp3.tencent.com
+ntp4.tencent.com
+ntp5.tencent.com
+cn.pool.ntp.org
+
+# ============ 运营商一键登录 ============
+id6.me
+open.e.189.cn
+hmrz.wo.cn
+nishub1.10010.com
+enrichgw.10010.com
+*.cmpassport.com
+*.wosms.cn
+
+# ============ 金融 / 生活 ============
+app.yinxiang.com
++.cmbchina.com
++.cmbimg.com
+*.pingan.com.cn
+*.10099.com.cn
+*.microdone.cn
+*.jegotrip.com.cn
+
+# ============ QQ / 微信登录 ============
+localhost.ptlogin2.qq.com
+localhost.sec.qq.com
+localhost.*.weixin.qq.com
+
+# ============ 音乐 ============
+music.163.com
+*.music.163.com
+*.126.net
+music.taihe.com
+songsearch.kugou.com
+trackercdn.kugou.com
+*.kuwo.cn
+y.qq.com
+streamoc.music.tc.qq.com
+mobileoc.music.tc.qq.com
+isure.stream.qqmusic.qq.com
+dl.stream.qqmusic.qq.com
+aqqmusic.tc.qq.com
+*.y.qq.com
+*.xiami.com
+music.migu.cn
+*.music.migu.cn
+
+# ============ 游戏国服 ============
+ff.dorado.sdo.com
++.battlenet.com.cn
++.wotgame.cn
++.wggames.cn
++.wowsgame.cn
++.gcloudcs.com
++.gcloudsdk.com
+*.blzstatic.cn
+*.ff14.sdo.com
+
+# ============ Apple 软件更新（国内 CDN） ============
+mesu.apple.com
+swscan.apple.com
+swdownload.apple.com
+swcdn.apple.com
+swdist.apple.com
+
+# ============ 视频 / 下载 ============
+*.mcdn.bilivideo.cn
++.sandai.net
++.n0808.com
+
+# ============ 加速器 ============
+ps.res.netease.com
++.uu.163.com
+
+# ============ 米家 / 智能家居 ============
++.market.xiaomi.com
+*.mi.com
+*.mijia.com
+dlg.io.mi.com
+
+# ============ 向日葵 / 花生壳 ============
++.oray.com
++.orayimg.com
+
+# ============ STUN 国内 ============
++.stun.*.cn
++.stun.*.*.cn
++.stun.*.*.*.cn
++.stun.*.*.*.*.cn
+stun.*.cn
+stun.*.*.cn
+
+# ============ Steam 国内 CDN ============
+alibaba.cdn.steampipe.steamcontent.com

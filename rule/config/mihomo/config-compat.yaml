@@ -35,7 +35,6 @@ provider-anchor:
 
 unified-delay: true
 tcp-concurrent: true
-global-client-fingerprint: chrome
 
 sniffer:
   enable: true

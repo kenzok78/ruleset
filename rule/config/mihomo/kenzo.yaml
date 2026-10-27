@@ -1,0 +1,220 @@
+# ============================================================
+# 自用模板（kenzo11.yaml 的公开版，订阅已占位化）
+# ============================================================
+# AI 分成 OpenAI / Claude / Gemini / Muse / AI 其他 五组，各自可独立选线路。
+#
+# 和 config.yaml 的差异：
+#   - 没有 provider-anchor，多订阅手动列在 node-anchor 里
+#   - 规则顺序按自己习惯调过：直连补充 -> 代理补充 -> APNs -> AI -> 平台
+#   - DNS 只做 fake-ip 白名单，不做强制泄漏防护
+#
+# 用之前把 订阅1 / 订阅2 换成自己的机场链接。
+# ============================================================
+
+proxy-providers:
+  机场1:
+    type: http
+    interval: 86400
+    health-check:
+      enable: true
+      url: https://www.gstatic.com/generate_204
+      interval: 120
+    proxy: 🌐 直连
+    url: "订阅1"
+  机场2:
+    type: http
+    interval: 86400
+    health-check:
+      enable: true
+      url: https://www.gstatic.com/generate_204
+      interval: 120
+    proxy: 🌐 直连
+    url: "订阅2"
+
+unified-delay: true
+tcp-concurrent: true
+
+# ---------------- 嗅探 ----------------
+sniffer:
+  enable: true
+  sniff:
+    HTTP:
+      ports: [80, 8080-8880]
+      override-destination: true
+    TLS:
+      ports: [443, 8443]
+    QUIC:
+      ports: [443, 8443]
+  skip-domain:
+    - "Mijia Cloud"
+    - "dlg.io.mi.com"
+    - "+.push.apple.com"
+
+proxies:
+  - name: "🌐 直连"
+    type: direct
+    udp: true
+
+# ---------------- DNS ----------------
+dns:
+  enable: true
+  cache-algorithm: arc
+  ipv6: false
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.0/16
+  fake-ip-filter-mode: blacklist
+  fake-ip-filter:
+    - rule-set:fakeipfilter_cn
+    - rule-set:fakeipfilter_not_cn
+    - rule-set:private_domain
+    - "+.lan"
+    - "+.local"
+  default-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  proxy-server-nameserver:
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
+  nameserver:
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
+
+# ---------------- 锚点 ----------------
+rule-anchor:
+  pr: &pr {type: select, proxies: [🚀 节点选择, ♻️ 香港自动, ♻️ 日本自动, ♻️ 美国自动, ♻️ 新加坡自动, ♻️ 集合自动, ♻️ 自动选择, 🇭🇰 香港节点, 🇯🇵 日本节点, 🇺🇲 美国节点, 🇸🇬 新加坡节点, 🇺🇳 集合节点, 🌍 全部节点, 🌐 直连]}
+  ip: &ip {type: http, interval: 86400, behavior: ipcidr, format: mrs}
+  domain: &domain {type: http, interval: 86400, behavior: domain, format: mrs}
+  domain_text: &domain_text {type: http, interval: 86400, behavior: domain, format: text}
+  class: &class {type: http, interval: 86400, behavior: classical, format: text}
+
+# ---------------- 策略组 ----------------
+proxy-groups:
+  - {name: 🚀 节点选择, type: select, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/rocket.svg", proxies: [♻️ 香港自动, ♻️ 日本自动, ♻️ 美国自动, ♻️ 新加坡自动, ♻️ 集合自动, ♻️ 自动选择, 🇭🇰 香港节点, 🇯🇵 日本节点, 🇺🇲 美国节点, 🇸🇬 新加坡节点, 🇺🇳 集合节点, 🌍 全部节点, 🌐 直连]}
+
+  # --- AI：每家一组 ---
+  - {name: 🔮 OpenAI, <<: *pr, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/openai.svg"}
+  - {name: 🧠 Claude, <<: *pr, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/claude.svg"}
+  - {name: 🤖 Gemini, <<: *pr, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/gemini.svg"}
+  - {name: ✨ Muse, <<: *pr}
+  - {name: 🪄 AI 其他, <<: *pr}
+
+  # --- 平台 ---
+  - {name: ▶️ YouTube, <<: *pr, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/youtube.svg"}
+  - {name: 🔍 Google, <<: *pr, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/google.svg"}
+  - {name: 🐦 Twitter, <<: *pr, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/x.svg"}
+  - {name: 📦 GitHub, <<: *pr, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/github.svg"}
+  - {name: 🪟 Microsoft, <<: *pr, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/microsoft.svg"}
+  - {name: 🎵 TikTok, <<: *pr, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/tiktok.svg"}
+  - {name: 📺 Netflix, <<: *pr, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/netflix.svg"}
+  - {name: 🎬 流媒体, <<: *pr, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/film.svg"}
+  - {name: 💳 PayPal, <<: *pr, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/paypal.svg"}
+  - {name: 📲 电报消息, <<: *pr, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/telegram.svg"}
+
+  # --- 特殊 ---
+  - {name: 🍏 Apple, type: select, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/apple.svg", proxies: [🌐 直连, 🚀 节点选择]}
+  - {name: 📣 APNs 推送, type: select, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/bell.svg", proxies: [🚀 节点选择, ♻️ 自动选择, 🌐 直连]}
+  - {name: 🎯 全球直连, type: select, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/direct.svg", proxies: [🌐 直连, 🚀 节点选择]}
+  - {name: 🏠 私有网络, type: select, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/home.svg", proxies: [🌐 直连, 🚀 节点选择]}
+  - {name: 🌐 非中国, <<: *pr, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/globe.svg"}
+  - {name: 🐟 漏网之鱼, <<: *pr, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/fish.svg"}
+
+  # --- 地区节点 ---
+  - {name: 🇭🇰 香港节点, type: select, include-all: true, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/flag-hk.svg", filter: "(?i)港|hk|hongkong|hong kong"}
+  - {name: 🇯🇵 日本节点, type: select, include-all: true, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/flag-jp.svg", filter: "(?i)日|jp|japan"}
+  - {name: 🇺🇲 美国节点, type: select, include-all: true, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/flag-us.svg", filter: "(?i)美|us|unitedstates|united states"}
+  - {name: 🇸🇬 新加坡节点, type: select, include-all: true, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/flag-sg.svg", filter: "(?i)新加坡|坡|狮城|sg|singapore"}
+  - {name: 🇺🇳 集合节点, type: select, include-all: true, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/flag-tw.svg", filter: "(?i)台|tw|taiwan|韩|kr|korea"}
+
+  # --- 自动测速 ---
+  - {name: ♻️ 香港自动, type: url-test, include-all: true, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/auto.svg", tolerance: 20, interval: 300, filter: "(?=.*(港|HK|(?i)Hong))^((?!(台|日|韩|新|深|美)).)*$"}
+  - {name: ♻️ 日本自动, type: url-test, include-all: true, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/auto.svg", tolerance: 20, interval: 300, filter: "(?=.*(日|JP|(?i)Japan))^((?!(港|台|韩|新|美)).)*$"}
+  - {name: ♻️ 美国自动, type: url-test, include-all: true, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/auto.svg", tolerance: 20, interval: 300, filter: "(?=.*(美|US|(?i)States|America))^((?!(港|台|日|韩|新)).)*$"}
+  - {name: ♻️ 新加坡自动, type: url-test, include-all: true, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/auto.svg", tolerance: 20, interval: 300, filter: "(?=.*(新|SG|(?i)Singapore))^((?!(港|台|日|韩|美)).)*$"}
+  - {name: ♻️ 集合自动, type: url-test, include-all: true, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/auto.svg", tolerance: 20, interval: 300, filter: "(?i)台|tw|taiwan|韩|kr|korea"}
+  - {name: ♻️ 自动选择, type: url-test, include-all: true, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/auto.svg", tolerance: 20, interval: 300}
+  - {name: 🌍 全部节点, type: select, include-all: true, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/all.svg"}
+
+# ---------------- 分流规则 ----------------
+rules:
+  # 1. 局域网
+  - RULE-SET,private_ip,🏠 私有网络,no-resolve
+  - RULE-SET,private_domain,🏠 私有网络
+
+  # 2. 自己的补充名单
+  - RULE-SET,direct1,🌐 直连
+  - RULE-SET,proxylite,🚀 节点选择
+
+  # 3. APNs（必须排在 Apple 之前）
+  - RULE-SET,apple_push,📣 APNs 推送
+
+  # 4. AI 各家
+  - RULE-SET,openai_domain,🔮 OpenAI
+  - RULE-SET,claude_domain,🧠 Claude
+  - RULE-SET,gemini_domain,🤖 Gemini
+  # - RULE-SET,muse_domain,✨ Muse     # 待补域名
+  - RULE-SET,ai_domain,🪄 AI 其他
+
+  # 5. 平台
+  - RULE-SET,twitter_domain,🐦 Twitter
+  - RULE-SET,github_domain,📦 GitHub
+  - RULE-SET,microsoft_domain,🪟 Microsoft
+  - RULE-SET,youtube_domain,▶️ YouTube
+  - RULE-SET,google_domain,🔍 Google
+  - RULE-SET,tiktok_domain,🎵 TikTok
+  - RULE-SET,netflix_domain,📺 Netflix
+  - RULE-SET,hulu_domain,🎬 流媒体
+  - RULE-SET,disney_domain,🎬 流媒体
+  - RULE-SET,hbo_domain,🎬 流媒体
+  - RULE-SET,amazon_domain,🎬 流媒体
+  - RULE-SET,paypal_domain,💳 PayPal
+  - RULE-SET,apple_domain,🍏 Apple
+
+  # 6. 国内外兜底
+  - RULE-SET,cn_domain,🎯 全球直连
+  - RULE-SET,geolocation-!cn,🌐 非中国
+
+  # 7. IP 兜底
+  - RULE-SET,telegram_ip,📲 电报消息,no-resolve
+  - RULE-SET,cn_ip,🎯 全球直连,no-resolve
+  - RULE-SET,google_ip,🔍 Google,no-resolve
+  - RULE-SET,netflix_ip,📺 Netflix,no-resolve
+
+  - MATCH,🐟 漏网之鱼
+
+# ---------------- 规则集 ----------------
+rule-providers:
+  # 本仓库维护
+  direct1: { <<: *class, url: "https://raw.githubusercontent.com/kenzok78/ruleset/main/rule/Direct.list" }
+  proxylite: { <<: *class, url: "https://raw.githubusercontent.com/kenzok78/ruleset/main/rule/ProxyLite.list" }
+  ai_domain: { <<: *class, url: "https://raw.githubusercontent.com/kenzok78/ruleset/main/rule/AI.list" }
+  apple_push: { <<: *class, url: "https://raw.githubusercontent.com/kenzok78/ruleset/main/rule/ApplePush.list" }
+  fakeipfilter_cn: { <<: *domain_text, url: "https://raw.githubusercontent.com/kenzok78/ruleset/main/rule/FakeIPFilter-CN.list" }
+  fakeipfilter_not_cn: { <<: *domain_text, url: "https://raw.githubusercontent.com/kenzok78/ruleset/main/rule/FakeIPFilter-NotCN.list" }
+
+  # 上游 MetaCubeX
+  private_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.mrs" }
+  openai_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/openai.mrs" }
+  claude_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/anthropic.mrs" }
+  gemini_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google-gemini.mrs" }
+  # muse_domain: { <<: *class, url: "https://raw.githubusercontent.com/kenzok78/ruleset/main/rule/Muse.list" }
+  twitter_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/twitter.mrs" }
+  youtube_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/youtube.mrs" }
+  google_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google.mrs" }
+  github_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/github.mrs" }
+  netflix_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/netflix.mrs" }
+  hulu_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/hulu.mrs" }
+  disney_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/disney.mrs" }
+  hbo_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/hbo.mrs" }
+  amazon_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/amazon.mrs" }
+  paypal_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/paypal.mrs" }
+  microsoft_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/microsoft.mrs" }
+  apple_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/apple-cn.mrs" }
+  tiktok_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/tiktok.mrs" }
+  geolocation-!cn: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/geolocation-!cn.mrs" }
+  cn_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cn.mrs" }
+
+  private_ip: { <<: *ip, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/private.mrs" }
+  telegram_ip: { <<: *ip, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/telegram.mrs" }
+  cn_ip: { <<: *ip, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/cn.mrs" }
+  google_ip: { <<: *ip, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/google.mrs" }
+  netflix_ip: { <<: *ip, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/netflix.mrs" }

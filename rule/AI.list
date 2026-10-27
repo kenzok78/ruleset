@@ -1,14 +1,60 @@
-# 内容 OpenAi Bard anthropic claude
+# AI 补充名单（OpenAI / Claude / Gemini 之外的 AI 站）
+#
+# 主流的几家已经由 mrs 覆盖，走各自分组：
+#   OpenAI  -> geo/geosite/openai.mrs
+#   Claude  -> geo/geosite/anthropic.mrs
+#   Gemini  -> geo/geosite/google-gemini.mrs
+#
+# 本文件负责「其余 AI 站」：Perplexity / Grok / Copilot / HuggingFace / Poe 等，
+# 统一交给 🪄 AI 其他 组，避免落进漏网之鱼被随便带出去。
+#
+# 行为：classical，format: text
 
-# 域名关键字匹配
-DOMAIN-KEYWORD,openai
-DOMAIN-KEYWORD,anthropic
-DOMAIN-KEYWORD,Claude
-DOMAIN-KEYWORD,sora
-
-# 域名后缀匹配
+# ============ Perplexity ============
 DOMAIN-SUFFIX,perplexity.ai
+DOMAIN-SUFFIX,ppl-ai-prod.platform.bing.com
+
+# ============ xAI Grok ============
+DOMAIN-SUFFIX,x.ai
+DOMAIN-SUFFIX,grok.com
+DOMAIN-KEYWORD,grok
+
+# ============ Microsoft Copilot ============
+DOMAIN-SUFFIX,copilot.microsoft.com
+DOMAIN-SUFFIX,copilot.cloud.microsoft
+DOMAIN-SUFFIX,designer.microsoft.com
+DOMAIN-SUFFIX,sydney.bing.com
+
+# ============ HuggingFace ============
+DOMAIN-SUFFIX,huggingface.co
+DOMAIN-SUFFIX,hf.co
+DOMAIN-SUFFIX,huggingface.dev
+
+# ============ Poe / Character.ai / Midjourney ============
+DOMAIN-SUFFIX,poe.com
+DOMAIN-SUFFIX,character.ai
+DOMAIN-SUFFIX,midjourney.com
+
+# ============ Mistral / Cohere / Stability ============
+DOMAIN-SUFFIX,mistral.ai
+DOMAIN-SUFFIX,cohere.ai
+DOMAIN-SUFFIX,stability.ai
+DOMAIN-SUFFIX,replicate.com
+
+# ============ 编程 AI 工具 ============
+DOMAIN-SUFFIX,cursor.com
+DOMAIN-SUFFIX,cursor.sh
+DOMAIN-SUFFIX,anthropic-cdn.com
+DOMAIN-SUFFIX,windsurf.com
+DOMAIN-SUFFIX,codeium.com
+
+# ============ OpenAI 附属（mrs 遗漏时兜底） ============
+DOMAIN-KEYWORD,openai
+DOMAIN-KEYWORD,oaistatic
+DOMAIN-KEYWORD,oaiusercontent
 DOMAIN-SUFFIX,chatgpt.com
+DOMAIN-SUFFIX,sora.com
+DOMAIN-SUFFIX,openaiapi-site.azureedge.net
 DOMAIN-SUFFIX,auth0.com
 DOMAIN-SUFFIX,client-api.arkoselabs.com
 DOMAIN-SUFFIX,events.statsigapi.net
@@ -16,15 +62,18 @@ DOMAIN-SUFFIX,featuregates.org
 DOMAIN-SUFFIX,identrust.com
 DOMAIN-SUFFIX,intercom.io
 DOMAIN-SUFFIX,intercomcdn.com
-DOMAIN-SUFFIX,oaistatic.com
-DOMAIN-SUFFIX,oaiusercontent.com
-DOMAIN-SUFFIX,openai.com
-DOMAIN-SUFFIX,openaiapi-site.azureedge.net
 DOMAIN-SUFFIX,sentry.io
 DOMAIN-SUFFIX,stripe.com
+
+# ============ Claude 附属（mrs 遗漏时兜底） ============
+DOMAIN-KEYWORD,anthropic
+DOMAIN-KEYWORD,claude
+DOMAIN-SUFFIX,claude.ai
+DOMAIN-SUFFIX,anthropic.com
+
+# ============ Gemini 附属（mrs 遗漏时兜底） ============
 DOMAIN-SUFFIX,bard.google.com
 DOMAIN-SUFFIX,gemini.google.com
 DOMAIN-SUFFIX,makersuite.google.com
-DOMAIN-SUFFIX,anthropic.com
-DOMAIN-SUFFIX,claude.ai
-DOMAIN-SUFFIX,sora.com
+DOMAIN-SUFFIX,aistudio.google.com
+DOMAIN-SUFFIX,generativelanguage.googleapis.com

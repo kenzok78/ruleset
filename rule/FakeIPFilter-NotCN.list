@@ -1,0 +1,107 @@
+# Fake-IP Filter · 国外段
+#
+# 作用：命中这些域名的请求不使用 fake-ip，直接走真实 DNS 解析。
+# 这类域名的共同点是「必须拿到真实 IP 才能工作」：
+# 时间同步、STUN 打洞、游戏机联机、Wi-Fi Calling、CDN 就近调度。
+#
+# 用法：mihomo fake-ip-filter 里引用 `rule-set:fakeipfilter_not_cn`，
+#       同时可放进 nameserver-policy 指定国外 DNS。
+#
+# 来源：社区通用 fake-ip-filter 列表（sukkaw / ACL4SSR 衍生）+ kenzok78 自用补充
+
+# ============ 连通性探测 / 工具 ============
+cable.auth.com
+network-test.debian.org
+detectportal.firefox.com
+resolver1.opendns.com
+global.turn.twilio.com
+global.stun.twilio.com
+injections.adguard.org
+local.adguard.org
+proxy.golang.org
+shark007.net
+
+# ============ NTP 国外 ============
+time-ios.apple.com
++.pool.ntp.org
+time.*.com
+time.*.gov
+time.*.apple.com
+time1.*.com
+time2.*.com
+time3.*.com
+time4.*.com
+time5.*.com
+time6.*.com
+time7.*.com
+ntp.*.com
+ntp1.*.com
+ntp2.*.com
+ntp3.*.com
+ntp4.*.com
+ntp5.*.com
+ntp6.*.com
+ntp7.*.com
+
+# ============ STUN ============
++.stun.*.*
++.stun.*.*.*
++.stun.*.*.*.*
++.stun.*.*.*.*.*
+stun.*.*
+stun.*.*.*
+
+# ============ 音乐 ============
+api-jooxtt.sanook.com
+api.joox.com
+joox.com
+
+# ============ Windows 本地连接检测 ============
++.msftconnecttest.com
++.msftncsi.com
+
+# ============ 游戏机 ============
++.srv.nintendo.net
++.cdn.nintendo.net
+*.n.n.srv.nintendo.net
++.stun.playstation.net
+xnotify.xboxlive.com
+xbox.*.*.microsoft.com
+*.*.xboxlive.com
+xbox.*.microsoft.com
+
+# ============ 暴雪 / 战舰世界 ============
++.battle.net
++.wargaming.net
+
+# ============ Steam ============
++.steamcontent.com
+
+# ============ Final Fantasy XIV 国际服 ============
+*.square-enix.com
+*.finalfantasyxiv.com
+*.ffxiv.com
+
+# ============ 路由器 ============
+heartbeat.belkin.com
+*.linksys.com
+*.linksyssmartwifi.com
+
+# ============ Google ============
+lens.l.google.com
+stun.l.google.com
+na.b.g-tun.com
+
+# ============ Netflix ============
++.nflxvideo.net
+
+# ============ Disney Plus ============
++.media.dssott.com
+
+# ============ Wi-Fi Calling ============
++.pub.3gppnetwork.org
+
+# ============ Plex（局域网直连必须真实 IP） ============
+*.plex.tv
+*.plexapp.com
+*.plexmediaserver.com

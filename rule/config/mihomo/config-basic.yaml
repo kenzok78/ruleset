@@ -1,41 +1,15 @@
-# 通用版模板（已去除个人订阅信息）
-# 兼容客户端：Clash Verge / FlClash / luci-app-fchomo / luci-app-momo / luci-app-nikki / luci-app-openclash(Meta内核)
-# 注意：luci-app-openclash 请在“内核设置”中选择 Meta(Mihomo) 内核；Clash Premium 内核不支持 mrs 规则格式。
-proxy-providers:
-  机场1:
-    type: http
-    interval: 86400
-    health-check:
-      enable: true
-      url: https://www.gstatic.com/generate_204
-      interval: 300
-    proxy: 🌐 直连
-    url: "订阅1"
-  机场2:
-    type: http
-    interval: 86400
-    health-check:
-      enable: true
-      url: https://www.gstatic.com/generate_204
-      interval: 300
-    proxy: 🌐 直连
-    url: "订阅2"
-  机场3:
-    type: http
-    interval: 86400
-    health-check:
-      enable: true
-      url: https://www.gstatic.com/generate_204
-      interval: 300
-    proxy: 🌐 直连
-    url: "订阅3"
-
-provider-anchor:
-  all: &all [机场1, 机场2, 机场3]
+# ============================================================
+# 极简模板：单订阅，先跑通再说
+# ============================================================
+# 只有一个机场占位，规则集最少。
+# 需要多订阅 / AI 分组 / 更细分流，用同目录的 config.yaml。
+# 用之前把下面的 订阅1 换成自己的链接。
+# ============================================================
 
 unified-delay: true
 tcp-concurrent: true
-global-client-fingerprint: chrome
+
+# 嗅探器优化：解决日志报错，同时确保分流准确
 sniffer:
   enable: true
   sniff:
@@ -49,8 +23,42 @@ sniffer:
   skip-domain:
     - "Mijia Cloud"
     - "dlg.io.mi.com"
-    - "+.push.apple.com"
-    - "+.apple.com"
+    - "+.push.apple.com" # 仅跳过推送域名，不再跳过整个 apple.com
+
+proxy-providers:
+  机场1:
+    type: http
+    interval: 86400
+    health-check:
+      enable: true
+      url: https://www.gstatic.com/generate_204
+      interval: 300
+    proxy: 🌐 直连
+    url: "订阅1"
+
+# fake-ip 白名单：不放行的话，时间同步 / STUN 打洞 / 游戏机联机 / 局域网设备
+# 会拿到假 IP，表现为「网页能开但功能异常」
+dns:
+  enable: true
+  cache-algorithm: arc
+  ipv6: false
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.0/16
+  fake-ip-filter-mode: blacklist
+  fake-ip-filter:
+    - rule-set:fakeipfilter_cn
+    - rule-set:fakeipfilter_not_cn
+    - rule-set:private_domain
+    - "+.lan"
+    - "+.local"
+  default-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  proxy-server-nameserver:
+    - https://dns.alidns.com/dns-query
+  nameserver:
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
 
 proxies:
 - name: "🌐 直连"
@@ -76,28 +84,30 @@ proxy-groups:
   - {name: 📲 APNs 推送, type: select, proxies: [🚀 节点选择, ♻️ 自动选择, 🌐 直连]}
   - {name: 🎯 全球直连, type: select, proxies: [🌐 直连, 🚀 节点选择]}
   - {name: 🌀 列表之外, <<: *pr}
-  - {name: 🇭🇰 香港节点, type: select, use: *all, filter: "(?i)港|hk|hongkong|hong kong"}
-  - {name: 🇯🇵 日本节点, type: select, use: *all, filter: "(?i)日|jp|japan"}
-  - {name: 🇺🇲 美国节点, type: select, use: *all, filter: "(?i)美|us|unitedstates|united states"}
-  - {name: 🇸🇬 新加坡节点, type: select, use: *all, filter: "(?i)新|sg|singapore"}
-  - {name: 🇺🇳 集合节点, type: select, use: *all, filter: "(?i)台|tw|taiwan|韩|kr|korea"}
-  - {name: ♻️ 香港自动, type: url-test, use: *all, tolerance: 20, interval: 300, filter: "(?=.*(港|HK|(?i)Hong))^((?!(台|日|韩|新|深|美)).)*$"}
-  - {name: ♻️ 日本自动, type: url-test, use: *all, tolerance: 20, interval: 300, filter: "(?=.*(日|JP|(?i)Japan))^((?!(港|台|韩|新|美)).)*$"}
-  - {name: ♻️ 美国自动, type: url-test, use: *all, tolerance: 20, interval: 300, filter: "(?=.*(美|US|(?i)States|America))^((?!(港|台|日|韩|新)).)*$"}
-  - {name: ♻️ 新加坡自动, type: url-test, use: *all, tolerance: 20, interval: 300, filter: "(?=.*(新|SG|(?i)Singapore))^((?!(港|台|日|韩|美)).)*$"}
-  - {name: ♻️ 集合自动, type: url-test, use: *all, tolerance: 20, interval: 300, filter: "(?i)台|tw|taiwan|韩|kr|korea"}
-  - {name: ♻️ 自动选择, type: url-test, use: *all, tolerance: 20, interval: 300}
-  - {name: 🌍 全部节点, type: select, use: *all}
+  - {name: 🇭🇰 香港节点, type: select, include-all: true, filter: "(?i)港|hk|hongkong|hong kong"}
+  - {name: 🇯🇵 日本节点, type: select, include-all: true, filter: "(?i)日|jp|japan"}
+  - {name: 🇺🇲 美国节点, type: select, include-all: true, filter: "(?i)美|us|unitedstates|united states"}
+  - {name: 🇸🇬 新加坡节点, type: select, include-all: true, filter: "(?i)新|sg|singapore"}
+  - {name: 🇺🇳 集合节点, type: select, include-all: true, filter: "(?i)台|tw|taiwan|韩|kr|korea"}
+  - {name: ♻️ 香港自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(港|HK|(?i)Hong))^((?!(台|日|韩|新|深|美)).)*$"}
+  - {name: ♻️ 日本自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(日|JP|(?i)Japan))^((?!(港|台|韩|新|美)).)*$"}
+  - {name: ♻️ 美国自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(美|US|(?i)States|America))^((?!(港|台|日|韩|新)).)*$"}
+  - {name: ♻️ 新加坡自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(新|SG|(?i)Singapore))^((?!(港|台|日|韩|美)).)*$"}
+  - {name: ♻️ 集合自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?i)台|tw|taiwan|韩|kr|korea"}
+  - {name: ♻️ 自动选择, type: url-test, include-all: true, tolerance: 20, interval: 300}
+  - {name: 🌍 全部节点, type: select, include-all: true}
 
 rules:
   - RULE-SET,private_domain,🌐 直连
-  - RULE-SET,direct1,🌐 直连
-  - RULE-SET,apple_push,📲 APNs 推送
-  - RULE-SET,apple_domain,🍎 Apple
-  - RULE-SET,proxylite,🚀 节点选择
+  # --- AI 服务优先级提升，防止被 APNs 或 Apple 规则截流 ---
   - RULE-SET,openai_domain,🔮 OpenAI
   - RULE-SET,claude_domain,🧠 Claude
   - RULE-SET,gemini_domain,🤖 Gemini
+  # --------------------------------------------------
+  - RULE-SET,apple_push,📲 APNs 推送
+  - RULE-SET,direct1,🌐 直连
+  - RULE-SET,apple_domain,🍎 Apple
+  - RULE-SET,proxylite,🚀 节点选择
   - RULE-SET,twitter_domain,🐦 Twitter
   - RULE-SET,github_domain,📦 GitHub
   - RULE-SET,microsoft_domain,Ⓜ️ Microsoft
@@ -116,12 +126,15 @@ rules:
 rule-anchor:
   ip: &ip {type: http, interval: 86400, behavior: ipcidr, format: mrs}
   domain: &domain {type: http, interval: 86400, behavior: domain, format: mrs}
+  domain_text: &domain_text {type: http, interval: 86400, behavior: domain, format: text}
   class: &class {type: http, interval: 86400, behavior: classical, format: text}
 
 rule-providers:
   private_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.mrs" }
   direct1: { <<: *class, url: "https://raw.githubusercontent.com/kenzok78/ruleset/main/rule/Direct.list" }
   proxylite: { <<: *class, url: "https://raw.githubusercontent.com/kenzok78/ruleset/main/rule/ProxyLite.list" }
+  fakeipfilter_cn: { <<: *domain_text, url: "https://raw.githubusercontent.com/kenzok78/ruleset/main/rule/FakeIPFilter-CN.list" }
+  fakeipfilter_not_cn: { <<: *domain_text, url: "https://raw.githubusercontent.com/kenzok78/ruleset/main/rule/FakeIPFilter-NotCN.list" }
   openai_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/openai.mrs" }
   claude_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/anthropic.mrs" }
   gemini_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google-gemini.mrs" }
