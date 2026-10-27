@@ -8,7 +8,7 @@
 | `config-full.yaml` | 想要全端口 + 系统级配置 | redir / tproxy / socks 全开，带 geox-url 自动更新 |
 | `config-compat.yaml` | Clash Premium 内核 | 全部 text/yaml 规则，不用 mrs |
 | `kenzo.yaml` | 自用 | 个人模板，订阅已占位化 |
-| `kenzo.ini` / `kenzo_mini.ini` | OpenClash / Stash | `.ini` 是客户端的「规则集订阅」格式，不是 Clash 配置 |
+| `openclash/` | OpenClash 专用 | `openclash.uci` 是 UCI 配置，`kenzo.ini` / `kenzo_mini.ini` 是 OpenClash 的自定义规则集订阅格式，都不是 Clash 配置 |
 | `fx.yaml` | 旧版带端口转发 | 保留兼容，不建议新用 |
 
 ## 客户端对应
@@ -40,7 +40,7 @@ mihomo 需要 v1.18.0+，客户端需要支持 `icon` 字段（Clash Verge Rev /
 把域名加进 `../rule/Direct.list`，或者检查有没有开「拦 QUIC」那条规则。
 
 **NTP 对时失败 / 游戏联机失败 / 找不到 NAS**
-fake-ip 白名单没覆盖到。把域名加进 `../rule/FakeIPFilter-CN.list` 或 `FakeIPFilter-NotCN.list`。
+fake-ip 白名单没覆盖到。把域名加进 `../rule/FakeIPFilter-CN.list` 或 `../rule/FakeIPFilter-NotCN.list`。
 
 **日志出现 `global-client-fingerprint is removed`**
 mihomo v1.19 起移除了全局指纹配置。新内核不用管；旧内核需要全局伪装时自己加回 `global-client-fingerprint: chrome`。

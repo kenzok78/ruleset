@@ -1,0 +1,38 @@
+# ============================================================
+# Honk 系统配置 · 由 config.dae 用 include 引入
+# ============================================================
+# 基线来自本机实际部署（openwrt-honk/honk/files/system.dae），
+# 路径 /etc/honk/ 和 /usr/share/doona 都对得上 252 上的实际安装位置。
+#
+# 这个文件管「内核怎么跑」，config.dae 管「流量怎么分」，别混。
+# ============================================================
+
+global {
+    wan_interface: auto
+    # 局域网网卡。OpenWrt x86 一般是 br-lan；单网口设备可能是 eth0
+    # 查法：ip a 看哪个接口的 inet 地址是你网关地址
+    lan_interface: br-lan
+    log_level: info
+    dial_mode: domain
+    allow_insecure: false
+    auto_config_kernel_parameter: true
+    # honk 的数据目录：订阅缓存、API 状态、state/honk.db 都写这里
+    data_dir: '/etc/honk'
+    store_subscribe: true
+    nfqueue_enable: true
+}
+
+experimental {
+    # Doona 面板靠这个 native_api 连核心
+    native_api {
+        enabled: true
+        # 只监听本机：最安全，但要用 SSH 端口转发才能开面板
+        # 想从局域网直接开面板就改成路由器的 LAN 地址，例如 252 上是
+        #   listen: '192.168.3.252:9527'
+        listen: '127.0.0.1:9527'
+        password_auth: true
+        allow_anonymous_loopback: false
+        config_write: true
+        ui: '/usr/share/doona'
+    }
+}
