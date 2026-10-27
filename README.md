@@ -33,7 +33,8 @@ icon/       策略组图标
 |------|------|------|------|
 | `rule/Direct.list` | classical | 520 条：阿里 / 字节 / 腾讯 / B 站 / 网易等国内大厂域名 | 直连补充，防国内站走代理变慢或触发风控 |
 | `rule/ProxyLite.list` | classical | 26 条：Plex、国外 DNS 服务器 IP | 代理补充，Plex 远程访问和 DoH 必须走代理 |
-| `rule/AI.list` | classical | Perplexity / Grok / Copilot / HuggingFace / Poe / Cursor 等 | AI 兜底组。OpenAI / Claude / Gemini 由上游 mrs 覆盖，这份管其余 AI 站 |
+| `rule/AI.list` | classical | Perplexity / Grok / Copilot / HuggingFace / Poe / Cursor 等 | AI 兜底组。OpenAI / Claude / Gemini / Muse 各自有独立名单，这份管其余 AI 站 |
+| `rule/Muse.list` | classical | `muse.ai`（Meta 旗下的个人 AI Agent） | Muse 组。geosite 里没有 muse 这个 code，只能手写域名 |
 | `rule/ApplePush.list` | classical | APNs 推送域名 + Apple 推送 IP 段 | 独立推送组，国内 iPhone 建议 APNs 走代理 |
 | `rule/FakeIPFilter-CN.list` | domain text | 局域网、国内 NTP、运营商一键登录、音乐/游戏/Apple 更新 CDN | fake-ip 白名单（国内段），命中返回真实 IP |
 | `rule/FakeIPFilter-NotCN.list` | domain text | 国外 NTP、STUN、Switch/PS/Xbox 联机、Netflix、Disney+、Plex | fake-ip 白名单（国外段） |
@@ -46,6 +47,7 @@ icon/       策略组图标
 https://raw.githubusercontent.com/kenzok78/ruleset/main/rule/Direct.list
 https://raw.githubusercontent.com/kenzok78/ruleset/main/rule/ProxyLite.list
 https://raw.githubusercontent.com/kenzok78/ruleset/main/rule/AI.list
+https://raw.githubusercontent.com/kenzok78/ruleset/main/rule/Muse.list
 https://raw.githubusercontent.com/kenzok78/ruleset/main/rule/ApplePush.list
 https://raw.githubusercontent.com/kenzok78/ruleset/main/rule/FakeIPFilter-CN.list
 https://raw.githubusercontent.com/kenzok78/ruleset/main/rule/FakeIPFilter-NotCN.list
@@ -64,7 +66,7 @@ https://raw.githubusercontent.com/kenzok78/ruleset/main/rule/FakeIPFilter-NotCN.
 | `config-full.yaml` | 要全端口 + TUN | 开了 http / socks / redir / tproxy / mixed 五端口，带 geo 自动更新 |
 | `config-basic.yaml` | 单订阅、快速跑通 | 只有一个机场占位，规则最少 |
 | `config-compat.yaml` | Clash Premium 内核 | 全部 text/yaml 规则，不用 mrs |
-| `kenzo.yaml` | 自用 | 个人模板，订阅已占位化。AI 分 OpenAI / Claude / Gemini / AI 其他 四组 |
+| `kenzo.yaml` | 自用 | 个人模板，订阅已占位化。AI 分 OpenAI / Claude / Gemini / Muse / AI 其他 五组 |
 | `fx.yaml` | 旧版带端口转发 | 保留兼容，不建议新用 |
 | `openclash/` | OpenClash 专用 | `openclash.uci` 是 UCI 配置（放 `/etc/config/openclash`），`kenzo.ini` / `kenzo_mini.ini` 是 OpenClash 的自定义规则集订阅格式 |
 
@@ -95,7 +97,7 @@ https://raw.githubusercontent.com/kenzok78/ruleset/main/rule/FakeIPFilter-NotCN.
 
 | 文件 | 说明 |
 |------|------|
-| `config.dae` | 完整版。AI 分 OpenAI / Claude / Gemini / AI 四组，平台各自分组，国内外 DNS 分流 |
+| `config.dae` | 完整版。AI 分 OpenAI / Claude / Gemini / Muse / AI 五组（Muse 用 `domain(suffix: muse.ai)` 手写，geosite 里没这个 code），平台各自分组，国内外 DNS 分流 |
 | `config.min.dae` | 精简版。只有一个 Proxy 组，先跑通再说 |
 
 ### 依赖的 geo 数据

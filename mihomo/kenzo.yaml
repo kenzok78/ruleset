@@ -95,7 +95,7 @@ proxy-groups:
   - {name: 🔮 OpenAI, <<: *pr, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/openai.svg"}
   - {name: 🧠 Claude, <<: *pr, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/claude.svg"}
   - {name: 🤖 Gemini, <<: *pr, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/gemini.svg"}
-  - {name: ✨ Muse, <<: *pr}
+  - {name: ✨ Muse, <<: *pr, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/muse.svg"}
   - {name: 🪄 AI 其他, <<: *pr}
 
   # --- 平台 ---
@@ -151,7 +151,7 @@ rules:
   - RULE-SET,openai_domain,🔮 OpenAI
   - RULE-SET,claude_domain,🧠 Claude
   - RULE-SET,gemini_domain,🤖 Gemini
-  # - RULE-SET,muse_domain,✨ Muse     # 待补域名
+  - RULE-SET,muse_domain,✨ Muse
   - RULE-SET,ai_domain,🪄 AI 其他
 
   # 5. 平台
@@ -196,7 +196,7 @@ rule-providers:
   openai_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/openai.mrs" }
   claude_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/anthropic.mrs" }
   gemini_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google-gemini.mrs" }
-  # muse_domain: { <<: *class, url: "https://raw.githubusercontent.com/kenzok78/ruleset/main/rule/Muse.list" }
+  muse_domain: { <<: *class, url: "https://raw.githubusercontent.com/kenzok78/ruleset/main/rule/Muse.list" }
   twitter_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/twitter.mrs" }
   youtube_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/youtube.mrs" }
   google_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google.mrs" }

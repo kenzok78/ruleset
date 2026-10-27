@@ -1,0 +1,11 @@
+# Muse（Meta 旗下的个人 AI Agent）https://muse.ai/
+#
+# muse.ai 是 Next.js 单页应用，静态资源、API、登录回调都在主域和子域下，
+# 所以一条 DOMAIN-SUFFIX 就够，所有子域（introducing / security / app ...）全覆盖。
+#
+# 注意：Muse 支持用 Meta / Facebook 账号登录，但那部分域名走公共规则，
+# 不要塞进这里，否则整个 Facebook 都会被拉进 Muse 组。
+#
+# 行为：classical，format: text
+
+DOMAIN-SUFFIX,muse.ai

@@ -129,7 +129,7 @@ proxy-groups:
   - {name: 🔮 OpenAI, <<: *pr, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/openai.svg"}
   - {name: 🧠 Claude, <<: *pr, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/claude.svg"}
   - {name: 🤖 Gemini, <<: *pr, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/gemini.svg"}
-  - {name: ✨ Muse, <<: *pr}
+  - {name: ✨ Muse, <<: *pr, icon: "https://raw.githubusercontent.com/kenzok78/ruleset/main/icon/muse.svg"}
   - {name: 🪄 AI 其他, <<: *pr}
 
   # --- 常用平台 ---
@@ -187,7 +187,7 @@ rules:
   - RULE-SET,openai_domain,🔮 OpenAI
   - RULE-SET,claude_domain,🧠 Claude
   - RULE-SET,gemini_domain,🤖 Gemini
-  # - RULE-SET,muse_domain,✨ Muse     # 待补域名，规则见 rule-providers 里的注释
+  - RULE-SET,muse_domain,✨ Muse
   - RULE-SET,ai_domain,🪄 AI 其他
 
   # 5. 常用平台
@@ -235,8 +235,7 @@ rule-providers:
   openai_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/openai.mrs" }
   claude_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/anthropic.mrs" }
   gemini_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google-gemini.mrs" }
-  # Muse 域名待补：建 rule/Muse.list（classical 格式）后打开下面两行
-  # muse_domain: { <<: *class, url: "https://raw.githubusercontent.com/kenzok78/ruleset/main/rule/Muse.list" }
+  muse_domain: { <<: *class, url: "https://raw.githubusercontent.com/kenzok78/ruleset/main/rule/Muse.list" }
   youtube_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/youtube.mrs" }
   google_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google.mrs" }
   github_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/github.mrs" }

@@ -62,6 +62,10 @@ group {
         filter: name(regex: '🇺🇸|US|us|美国|美|United States') && !name(regex: '排除')
         policy: min_moving_avg
     }
+    Muse {
+        filter: name(regex: '🇺🇸|US|us|美国|美|United States') && !name(regex: '排除')
+        policy: min_moving_avg
+    }
     AI {
         filter: name(regex: '🇺🇸|US|us|美国|美|United States') && !name(regex: '排除')
         policy: min_moving_avg
@@ -177,7 +181,8 @@ routing {
     domain(geosite: openai) -> OpenAI
     domain(geosite: anthropic) -> Claude
     domain(geosite: google-gemini) -> Gemini
-    # Muse 暂未加：确认是哪个产品后，用 domain(suffix: xxx.com) -> Muse 补上
+    # muse.ai 是 Meta 旗下产品，geosite 里还没有这个 code，所以手写域名
+    domain(suffix: muse.ai) -> Muse
     # category-ai-!cn 兜住上面三家之外的所有 AI 站
     domain(geosite: category-ai-!cn) -> AI
 
