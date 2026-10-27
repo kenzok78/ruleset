@@ -44,3 +44,8 @@ fake-ip 白名单没覆盖到。把域名加进 `../rule/FakeIPFilter-CN.list` �
 
 **日志出现 `global-client-fingerprint is removed`**
 mihomo v1.19 起移除了全局指纹配置。新内核不用管；旧内核需要全局伪装时自己加回 `global-client-fingerprint: chrome`。
+
+**规则集全部拉取失败（TLS handshake timeout / EOF）**
+mihomo 的 rule-provider 下载**不走系统直连，而是走自己的代理链**（命中 rules 后按分流出站）。所以节点没连上、订阅没加载、或者代理组选错，规则集就一条都拉不下来。
+排查顺序：先看策略组里有没有可用节点 → 再看 `/providers/rules` 的 `updatedAt` 是不是空的 → 最后才怀疑 URL。
+临时强制直连可以在单个 provider 上加 `proxy: DIRECT`，但国内直连 `raw.githubusercontent.com` 基本不通，只适合排查用。
