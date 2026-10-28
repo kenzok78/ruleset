@@ -51,10 +51,13 @@ assets {
 }
 
 # 手写节点示例（不想用订阅就打开这段）
+# 一个 tag 只放一条链接。
+#
+# 注意：honk 不支持链式代理（dae 支持）。share-link 解析只取 "->" 之前的第一跳，
+# 后面的 hop 会被静默丢弃、日志也不报错，所以不要把链式链接写进来。
+# 需要链式代理请用 dae 内核装同一份配置。
 # node {
 #     my_vps: 'hysteria2://密码@vps.example.com:443/?sni=vps.example.com'
-#     # 链式代理：落地 -> 前置
-#     relay: 'vless://UUID@us.example.com:443?security=tls&sni=us.example.com -> trojan://密码@hk.example.com:443?sni=hk.example.com'
 # }
 
 # ---------------- 策略组 ----------------
