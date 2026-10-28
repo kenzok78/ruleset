@@ -49,8 +49,8 @@ Doona 面板靠它连核心，dae 没有这一段。
 ssh daed252 'mkdir -p /etc/honk'
 tar czf - config.dae system.dae | ssh daed252 'tar xzf - -C /etc/honk'
 
-# 3. 校验配置（honk 自带 validate）
-ssh daed252 '/usr/bin/honk validate -c /etc/honk/config.dae'
+# 3. 校验配置（honk-core 的 config validate，会输出 JSON 诊断）
+ssh daed252 '/usr/bin/honk-core config validate --config /etc/honk/config.dae'
 
 # 4. 重启并看日志
 ssh daed252 '/etc/init.d/honk restart; sleep 2; logread | tail -30'

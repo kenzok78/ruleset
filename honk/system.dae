@@ -23,7 +23,7 @@ global {
 }
 
 experimental {
-    # Doona 面板靠这个 native_api 连核心
+    # Doona 面板靠这个 native_api 连核心，默认端口 9527（和 LuCI 设置一致）
     native_api {
         enabled: true
         # 只监听本机：最安全，但要用 SSH 端口转发才能开面板
@@ -34,5 +34,14 @@ experimental {
         allow_anonymous_loopback: false
         config_write: true
         ui: '/usr/share/doona'
+    }
+
+    # Clash API：给 Zashboard / OpenClash 面板用，默认 9090
+    # 打开后浏览器访问 http://路由器IP:9090/ui/ ，secret 就是面板密码
+    clash_api {
+        external_controller: '0.0.0.0:9090'
+        external_ui: '/usr/share/honk/zashboard'
+        secret: '123456'
+        default_mode: Rule
     }
 }

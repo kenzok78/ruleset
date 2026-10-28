@@ -5,6 +5,10 @@
 #   1. global / experimental 拆到 system.dae，用 include 引入
 #   2. dns.upstream 定义时就绑定出口（default -> direct / remote -> Proxy）
 #   3. 多 experimental.native_api 段（Doona 面板靠它连核心）
+#   4. AI 按服务细分（OpenAI / Claude / Gemini / Muse），没有笼统的 AI 组
+#
+# 分流思路参考 qichiyuhub/rule 的 honk 配置：AI 站点逐个点名、Telegram 补 IP 段、
+# 订阅走 assets 直连拉取；DoT 封闭与 !dport(53, 853) 也来自那边。
 #
 # 本文件的基线取自 252 上实际在跑的配置（不是包里的出厂默认值），
 # 它比出厂默认多了：pname 规则、广告拦截、google-cn / 国服游戏直连、
@@ -34,6 +38,18 @@ subscription {
     }
 }
 
+# 订阅、geodata 的下载策略。首次启动代理组还没节点，走代理会拉不下来，所以 route: direct。
+# geo 数据沿用系统自带的 /usr/share/v2ray（OpenWrt 的 v2ray-geosite / v2ray-geoip 维护），
+# 这里不要再写 geodata 源，否则会出现两份数据各自更新。
+assets {
+    route: direct
+    subscription {
+        ua: 'clash.meta/1.19.30'
+        interval: 86400s
+        cache: true
+    }
+}
+
 # 手写节点示例（不想用订阅就打开这段）
 # node {
 #     my_vps: 'hysteria2://密码@vps.example.com:443/?sni=vps.example.com'
@@ -50,24 +66,21 @@ group {
     }
 
     # --- AI：每家单独一组，按需要换地区 ---
+    # OpenAI / Gemini / Muse 走新加坡，Claude 走台湾（Anthropic 对新加坡/IP 友好，台湾节点绕开美国限流）
     OpenAI {
-        filter: name(regex: '🇺🇸|US|us|美国|美|United States') && !name(regex: '排除')
+        filter: name(regex: '🇸🇬|SG|sg|新加坡|狮城|Singapore') && !name(regex: '排除')
         policy: min_moving_avg
     }
     Claude {
-        filter: name(regex: '🇺🇸|US|us|美国|美|United States') && !name(regex: '排除')
+        filter: name(regex: '🇹🇼|TW|tw|台湾|台灣|Taiwan') && !name(regex: '排除')
         policy: min_moving_avg
     }
     Gemini {
-        filter: name(regex: '🇺🇸|US|us|美国|美|United States') && !name(regex: '排除')
+        filter: name(regex: '🇸🇬|SG|sg|新加坡|狮城|Singapore') && !name(regex: '排除')
         policy: min_moving_avg
     }
     Muse {
-        filter: name(regex: '🇺🇸|US|us|美国|美|United States') && !name(regex: '排除')
-        policy: min_moving_avg
-    }
-    AI {
-        filter: name(regex: '🇺🇸|US|us|美国|美|United States') && !name(regex: '排除')
+        filter: name(regex: '🇸🇬|SG|sg|新加坡|狮城|Singapore') && !name(regex: '排除')
         policy: min_moving_avg
     }
 
@@ -117,10 +130,10 @@ group {
         policy: min_moving_avg
     }
 
-    # 漏网之鱼：全部节点参与
+    # 漏网之鱼：全部节点参与，用 score 按真实连接质量挑（比纯延迟更贴近体感）
     Final {
         filter: !name(regex: '官网|剩余|流量|套餐|免费|订阅|到期时间|直连|Expire Date|Traffic|ExpireDate')
-        policy: min_moving_avg
+        policy: score
     }
 }
 
@@ -165,8 +178,8 @@ routing {
     dip(224.0.0.0/3, 'ff00::/8') -> direct
     # 封掉 DoT，防止 App 绕过核心自己加密解析
     dport(853) -> block
-    # 局域网直连。!dport(53) 是为了别把 DNS 请求也当直连放过去
-    dip(geoip: private) && !dport(53) -> direct(must)
+    # 局域网直连。!dport(53, 853) 是为了别把 DNS / DoT 请求当直连放过去
+    dip(geoip: private) && !dport(53, 853) -> direct(must)
     # 拦掉 QUIC（443/UDP），强制回落 TCP，让按域名分流真正生效
     # 不想用就注释掉这行
     l4proto(udp) && dport(443) -> block
@@ -177,17 +190,22 @@ routing {
     # --- Google 中国服务 + 国服游戏，直接放行 ---
     domain(geosite: google-cn, geosite: category-games@cn) -> direct
 
-    # --- AI：顺序不能乱，先具体后笼统 ---
-    domain(geosite: openai) -> OpenAI
-    domain(geosite: anthropic) -> Claude
-    domain(geosite: google-gemini) -> Gemini
+    # --- AI：每家一个组，不用笼统的 AI 组 ---
+    # OpenAI（含 ChatGPT 静态资源域，geosite: openai 偶尔漏掉新版域名）
+    domain(geosite: openai, suffix: openai.com, suffix: chatgpt.com,
+           suffix: oaistatic.com, suffix: oaiusercontent.com) -> OpenAI
+    # Claude / Anthropic
+    domain(geosite: anthropic, suffix: claude.ai, suffix: anthropic.com) -> Claude
+    # Gemini 与 Google 自家的 AI 页面（NotebookLM 也在 Gemini 组）
+    domain(geosite: google-gemini, suffix: gemini.google.com,
+           suffix: notebooklm.google) -> Gemini
     # muse.ai 是 Meta 旗下产品，geosite 里还没有这个 code，所以手写域名
     domain(suffix: muse.ai) -> Muse
-    # category-ai-!cn 兜住上面三家之外的所有 AI 站
-    domain(geosite: category-ai-!cn) -> AI
+    # 其余 AI 站（Perplexity、Poe、Midjourney 等）不单独立组，归到 Proxy
+    domain(geosite: category-ai-!cn) -> Proxy
 
     # --- 常用平台 ---
-    domain(suffix: googleapis.cn, suffix: xn--ngstr-lra8j.com) -> Google
+    domain(suffix: googleapis.cn, suffix: xn--ngstr-lra8j.com, suffix: withgoogle.com) -> Google
     domain(geosite: youtube) -> Youtube
     domain(geosite: google) -> Google
     domain(geosite: github) -> Github
@@ -197,6 +215,8 @@ routing {
     domain(geosite: apple@cn) -> direct
     domain(geosite: apple) -> Apple
     domain(geosite: telegram) -> Telegram
+    # 有些客户端直接连 Telegram 的 IP 段，域名规则兜不住
+    dip(geoip: telegram) -> Telegram
     domain(geosite: tiktok) -> TikTok
     domain(geosite: netflix) -> Netflix
     domain(geosite: paypal, geosite: binance, geosite: okx, geosite: category-cryptocurrency) -> Wallet
@@ -207,7 +227,7 @@ routing {
     # 国内 IP 兜底放在域名规则之后。
     # 放到最上面的话，国外域名解析到国内 CDN 节点时会被误判成直连。
     domain(geosite: cn) -> direct
-    dip(geoip: cn) && !dport(53) -> direct(must)
+    dip(geoip: cn) && !dport(53, 853) -> direct(must)
     domain(geosite: geolocation-!cn) -> Proxy
     fallback: Final
 }
