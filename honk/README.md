@@ -2,24 +2,18 @@
 
 Honk 是 dae 的 Rust + eBPF 重写，配置语法和 dae 同源（文件都叫 `config.dae`），但有三处结构性差异。
 
-| 文件 | 说明 |
-|------|------|
-| `config.dae` | 策略组 + DNS + 分流规则 |
-| `system.dae` | `global` / `experimental`，由 `config.dae` 用 `include` 引入 |
+**本仓库就一份 `config.dae`**：订阅、策略组、DNS、路由、`global`、`experimental` 全在里面（和 qichiyuhub/rule 的写法一致）。
 
 ## 和 dae 的三个差异
 
-**1. global 可以拆出去（也可以不拆）**
+**1. global 可以拆出去，也可以不拆**
 
-honk 内核两种都吃：`global` / `experimental` 直接写在 `config.dae` 里能跑，拆到 `system.dae` 用 `include` 引入也能跑。本仓库选择拆分，是因为配 `luci-app-honk` 时，LuCI 需要改「监听端口 / Clash API」这类内核参数，而它只会去改 `system.dae`，不会去动用户的内容文件：
+honk 内核两种都吃：全写在 `config.dae` 里能跑，拆到 `system.dae` 用 `include` 引入也能跑。
 
-```dae
-include {
-    system.dae
-}
-```
+- 本仓库：**单文件**，一份 `config.dae`，复制/粘贴/导入都能直接用。
+- `luci-app-honk` 的**托管模式**：LuCI 要靠 sed 改 `system.dae` 来调监听端口和 Clash API，所以它自己生成的配置是两份（`config.dae` + `system.dae` + `include`）。
 
-> 网上很多教程（例如 qichiyuhub/rule）是**单文件**写法，`global` 和 `experimental` 全写在 config.dae 里。那种配置也能直接用：在 LuCI「配置 → 导入配置」上传即可，导入后是**手动模式**，配置由文件说了算，LuCI 的端口 / Clash API 设置会变只读。
+> 也就是说：**想用 LuCI 设置页改端口 / 开关 Clash API → 用托管模式的两份配置；想拿一份文件到处搬 → 用本仓库这种单文件**。单文件导入后在「手动模式」下运行，配置完全由文件决定，LuCI 里那些设置项会变只读。
 
 **2. DNS upstream 定义时就绑出口**
 
@@ -57,16 +51,20 @@ Doona 面板靠它连核心，dae 没有这一段。
 
 判断标准很简单：**要在 LuCI 里改端口、开关 Clash API、用订阅工具 → 托管模式；只想拿别人写好的整份配置直接跑 → 手动模式。**
 
+本仓库的 `config.dae` 是**单文件**写法，导入到 LuCI 后会落在**手动模式**；想要 LuCI 帮你管端口和 Clash API，就用包自带的两份配置（托管模式）或在设置页点「恢复托管模式」。
+
 ## 部署到 252
 
 ```bash
 # 1. 本机改好配置，推到本仓库
 # 2. 传上路由器
 ssh daed252 'mkdir -p /etc/honk'
-tar czf - config.dae system.dae | ssh daed252 'tar xzf - -C /etc/honk'
+tar czf - config.dae | ssh daed252 'tar xzf - -C /etc/honk'
 
 # 3. 校验配置（honk-core 的 config validate，会输出 JSON 诊断）
 ssh daed252 '/usr/bin/honk-core config validate --config /etc/honk/config.dae'
+
+# 如果设备上还留着旧的 system.dae，不用管：单文件不再 include 它，留着也不影响
 
 # 4. 重启并看日志
 ssh daed252 '/etc/init.d/honk restart; sleep 2; logread | tail -30'

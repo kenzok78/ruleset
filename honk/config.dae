@@ -22,10 +22,6 @@
 # 组名只能用英文和数字。
 # ============================================================
 
-include {
-    system.dae
-}
-
 # ---------------- 订阅 ----------------
 # honk 支持的写法：tag 后面跟 option block
 #   interval  多久更新一次，单位必须带 s/m/h
@@ -236,4 +232,43 @@ routing {
     dip(geoip: cn) && !dport(53, 853) -> direct(must)
     domain(geosite: geolocation-!cn) -> Proxy
     fallback: Final
+}
+
+global {
+    wan_interface: auto
+    # 局域网网卡。OpenWrt x86 一般是 br-lan；单网口设备可能是 eth0
+    # 查法：ip a 看哪个接口的 inet 地址是你网关地址
+    lan_interface: br-lan
+    log_level: info
+    dial_mode: domain
+    allow_insecure: false
+    auto_config_kernel_parameter: true
+    # honk 的数据目录：订阅缓存、API 状态、state/honk.db 都写这里
+    data_dir: '/etc/honk'
+    store_subscribe: true
+    nfqueue_enable: true
+}
+
+experimental {
+    # Doona 面板靠这个 native_api 连核心，默认端口 9527（和 LuCI 设置一致）
+    native_api {
+        enabled: true
+        # 只监听本机：最安全，但要用 SSH 端口转发才能开面板
+        # 想从局域网直接开面板就改成路由器的 LAN 地址，例如 252 上是
+        #   listen: '192.168.3.252:9527'
+        listen: '127.0.0.1:9527'
+        password_auth: true
+        allow_anonymous_loopback: false
+        config_write: true
+        ui: '/usr/share/doona'
+    }
+
+    # Clash API：给 Zashboard / OpenClash 面板用，默认 9090
+    # 打开后浏览器访问 http://路由器IP:9090/ui/ ，secret 就是面板密码
+    clash_api {
+        external_controller: '0.0.0.0:9090'
+        external_ui: '/usr/share/honk/zashboard'
+        secret: '123456'
+        default_mode: Rule
+    }
 }

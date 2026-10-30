@@ -49,23 +49,19 @@ group {
 
     # --- AI：每家单独一组，按需要换地区 ---
     OpenAI {
-        filter: name(regex: '🇺🇸|US|us|美国|美|United States') && !name(regex: '排除')
+        filter: name(regex: '🇸🇬|SG|sg|新加坡|狮城|Singapore') && !name(regex: '排除')
         policy: min_moving_avg
     }
     Claude {
-        filter: name(regex: '🇺🇸|US|us|美国|美|United States') && !name(regex: '排除')
+        filter: name(regex: '🇹🇼|TW|tw|台湾|台灣|Taiwan') && !name(regex: '排除')
         policy: min_moving_avg
     }
     Gemini {
-        filter: name(regex: '🇺🇸|US|us|美国|美|United States') && !name(regex: '排除')
+        filter: name(regex: '🇸🇬|SG|sg|新加坡|狮城|Singapore') && !name(regex: '排除')
         policy: min_moving_avg
     }
     Muse {
-        filter: name(regex: '🇺🇸|US|us|美国|美|United States') && !name(regex: '排除')
-        policy: min_moving_avg
-    }
-    AI {
-        filter: name(regex: '🇺🇸|US|us|美国|美|United States') && !name(regex: '排除')
+        filter: name(regex: '🇸🇬|SG|sg|新加坡|狮城|Singapore') && !name(regex: '排除')
         policy: min_moving_avg
     }
 
@@ -163,14 +159,19 @@ routing {
     # 不想用就注释掉这行
     l4proto(udp) && dport(443) -> block
 
-    # --- AI：顺序不能乱，先具体后笼统 ---
-    domain(geosite: openai) -> OpenAI
-    domain(geosite: anthropic) -> Claude
-    domain(geosite: google-gemini) -> Gemini
+    # --- AI：每家一个组，不用笼统的 AI 组 ---
+    # OpenAI（含 ChatGPT 静态资源域，geosite: openai 偶尔漏掉新版域名）
+    domain(geosite: openai, suffix: openai.com, suffix: chatgpt.com,
+           suffix: oaistatic.com, suffix: oaiusercontent.com) -> OpenAI
+    # Claude / Anthropic
+    domain(geosite: anthropic, suffix: claude.ai, suffix: anthropic.com) -> Claude
+    # Gemini 与 Google 家的 AI 页面（NotebookLM 归 Gemini）
+    domain(geosite: google-gemini, suffix: gemini.google.com,
+           suffix: notebooklm.google) -> Gemini
     # muse.ai 是 Meta 旗下产品，geosite 里还没有这个 code，所以手写域名
     domain(suffix: muse.ai) -> Muse
-    # category-ai-!cn 会兜住上面三家之外的所有 AI 站
-    domain(geosite: category-ai-!cn) -> AI
+    # 其余 AI 站（Perplexity、Poe、Midjourney 等）不单独立组，归到 Proxy
+    domain(geosite: category-ai-!cn) -> Proxy
 
     # --- 常用平台 ---
     domain(suffix: googleapis.cn, suffix: xn--ngstr-lra8j.com) -> Google
