@@ -97,7 +97,7 @@ https://raw.githubusercontent.com/kenzok78/ruleset/main/rule/FakeIPFilter-NotCN.
 
 | 文件 | 说明 |
 |------|------|
-| `config.dae` | 完整版。AI 分 OpenAI / Claude / Gemini / Muse / AI 五组（Muse 用 `domain(suffix: muse.ai)` 手写，geosite 里没这个 code），平台各自分组，国内外 DNS 分流 |
+| `config.dae` | 完整版。AI 分 OpenAI / Claude / Gemini / Muse 四组（Muse 用 `domain(suffix: muse.ai)` 手写，geosite 里没这个 code），YouTube / Google / Telegram / Steam 等平台各自分组，国内外 DNS 分流 |
 | `config.min.dae` | 精简版。只有一个 Proxy 组，先跑通再说 |
 
 ### 依赖的 geo 数据
@@ -123,14 +123,19 @@ OpenWrt 装 `v2ray-geosite` + `v2ray-geoip`，`luci-app-daede` 的「更新 geo�
 
 ## 四、Honk（`honk/`）
 
-Honk 是 dae 的 Rust + eBPF 重写，语法同源但有三处差异（详见 [honk/README.md](honk/README.md)）：`global` 拆到 `system.dae` 用 `include` 引入、DNS upstream 定义时绑出口、多 `experimental.native_api` 段。
+Honk 是 dae 的 Rust + eBPF 重写，语法同源，差异见 [honk/README.md](honk/README.md)：
+
+- `global` / `experimental` 可以和其它配置写在同一份 `config.dae` 里（本仓库就是单文件），也可以拆到 `system.dae` 用 `include` 引入，内核两种都吃
+- DNS `upstream` 定义时就绑定出口（`-> direct` / `-> proxy`）
+- `experimental.native_api` 是 Doona 面板的连接入口，另有可选的 `clash_api`
 
 | 文件 | 说明 |
 |------|------|
-| `config.dae` | 策略组 + DNS + 分流规则 |
-| `system.dae` | `global` / `experimental`，基线取自 252 上的实际部署 |
+| `config.dae` | 单文件：订阅 + 策略组 + DNS + 路由 + `global` + `experimental` |
 
-内核需要 BTF（`/sys/kernel/btf/vmlinux`），缺了 honk 会静默起不来。
+> `luci-app-honk` 的**托管模式**会自己生成两份（`config.dae` + `system.dae` + `include`），因为设置页要靠改 `system.dae` 调监听端口和 Clash API。导入本仓库这份单文件后跑的是**手动模式**，端口由文件决定，LuCI 里那些设置项变只读。
+
+内核要求：Linux **6.12+** 且带 BTF（`/sys/kernel/btf/vmlinux`）。低于 6.12（如 24.10 的 6.6）或没有 BTF，honk 直接起不来。
 
 ---
 

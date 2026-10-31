@@ -78,7 +78,7 @@ ssh daed252 '/etc/init.d/honk restart; sleep 2; logread | tail -30'
 |------|------|
 | `/usr/share/v2ray/geosite.dat` | `v2ray-geosite` 包 |
 | `/usr/share/v2ray/geoip.dat` | `v2ray-geoip` 包 |
-| `/sys/kernel/btf/vmlinux` | eBPF CO-RE 必需，缺了 honk 起不来 |
+| 内核 6.12+ 与 `/sys/kernel/btf/vmlinux` | eBPF CO-RE 必需，低于 6.12 或缺 BTF 都起不来 |
 | `kmod-sched-core` / `kmod-sched-bpf` / `kmod-veth` / `kmod-nft-queue` | eBPF 调度 |
 
 配置里用到的 geosite 代码和 [dae 那份](../dae/config.dae) 完全一致，来源是 Loyalsoldier 的 v2ray-rules-dat。
@@ -86,7 +86,7 @@ ssh daed252 '/etc/init.d/honk restart; sleep 2; logread | tail -30'
 ## 常见问题
 
 **起不来，日志没有任何输出**
-先查 `/sys/kernel/btf/vmlinux` 存不存在。Honk 用 CO-RE eBPF，内核没开 BTF 就是静默失败。252 是 kernel 6.12，自带 BTF，正常。
+Honk 用 CO-RE eBPF，要求内核 **6.12+** 且开了 BTF（`/sys/kernel/btf/vmlinux`），缺任一项都起不来；24.10 是 6.6，不支持，252 是 6.12，正常。
 
 **Doona 面板打不开**
 `experimental.native_api.listen` 是 `127.0.0.1:9527`，只能本机访问。LuCI 那边有反代；如果直接拿浏览器开，需要 SSH 端口转发。
