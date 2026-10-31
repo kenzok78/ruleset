@@ -177,11 +177,12 @@ routing {
     dip(224.0.0.0/3, 'ff00::/8') -> direct
     # 封掉 DoT，防止 App 绕过核心自己加密解析
     dport(853) -> block
-    # 局域网直连。!dport(53, 853) 是为了别把 DNS / DoT 请求当直连放过去。
-    # 这里必须写具体网段：内核要静态确认"路由器自己的管理地址"没被代理，
-    # 用 dip(geoip: private) 它证明不了，启动时会警告
-    # "LAN self-protection coverage could not be confirmed"。
-    dip(192.168.0.0/16, 10.0.0.0/8, 172.16.0.0/12, 127.0.0.0/8) && !dport(53, 853) -> direct(must)
+    # 局域网直连。必须写具体网段：内核要静态确认"路由器自己的管理地址"没被代理，
+    # dip(geoip: private) 证明不了。只排除 53，853 由上面那条 dport(853) -> block 拦。
+    dip(192.168.0.0/16, 10.0.0.0/8, 172.16.0.0/12, 127.0.0.0/8) && !dport(53) -> direct(must)
+    # 路由器有公网地址（尤其 IPv6）时，那些地址也要单独覆盖，否则照样警告
+    # "LAN self-protection coverage could not be confirmed"。按需补一行：
+    # dip(203.0.113.9, 240e:xxxx::1) && !dport(53) -> direct(must)
     # 拦掉 QUIC（443/UDP），强制回落 TCP，让按域名分流真正生效
     # 不想用就注释掉这行
     l4proto(udp) && dport(443) -> block
